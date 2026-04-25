@@ -1,8 +1,9 @@
 package com.tuberosus.ayl.feature.home.navigation
 
+import com.tuberosus.ayl.navigation.Route
 import kotlinx.serialization.Serializable
 
-sealed interface HomeGraphRoutes {
+sealed interface HomeGraphRoutes : Route {
     @Serializable
     data object Graph : HomeGraphRoutes
 

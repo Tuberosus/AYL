@@ -11,12 +11,9 @@ import com.tuberosus.ayl.feature.gallery.gallery_list.GalleryListViewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
-class StaffScreen {
-}
-
 @Composable
 fun StaffListScreenRoot() {
-    StaffScreen()
+    StaffListScreen()
 }
 
 @Composable

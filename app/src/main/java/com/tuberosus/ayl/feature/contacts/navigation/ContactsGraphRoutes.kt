@@ -1,8 +1,9 @@
 package com.tuberosus.ayl.feature.contacts.navigation
 
+import com.tuberosus.ayl.navigation.Route
 import kotlinx.serialization.Serializable
 
-sealed interface ContactsGraphRoutes {
+sealed interface ContactsGraphRoutes : Route {
     @Serializable
     data object Graph : ContactsGraphRoutes
 

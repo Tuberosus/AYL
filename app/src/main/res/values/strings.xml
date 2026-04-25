@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AYL</string>
+    <string name="nav_title_home">Главная</string>
+    <string name="nav_title_gallery">Галерея</string>
+    <string name="nav_title_news">Новости</string>
+    <string name="nav_title_staff">Штат</string>
+    <string name="nav_title_contacts">Контакты</string>
 </resources>
