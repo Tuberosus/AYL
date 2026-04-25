@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tuberosus.ayl.feature.gallery.GalleryViewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreenRoot() {
@@ -18,7 +18,7 @@ fun HomeScreenRoot() {
 
 @Composable
 private fun HomeScreen(
-    viewModel: GalleryViewModel = viewModel()
+    viewModel: GalleryViewModel = koinViewModel()
 ) {
     Box(
         modifier = Modifier

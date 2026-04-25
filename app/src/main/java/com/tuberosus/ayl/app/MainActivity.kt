@@ -1,9 +1,10 @@
-package com.tuberosus.ayl
+package com.tuberosus.ayl.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.tuberosus.ayl.feature.contacts.ContactsScreenRoot
 import com.tuberosus.ayl.ui.theme.AYLTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AYLTheme {
-
+                ContactsScreenRoot()
             }
         }
     }

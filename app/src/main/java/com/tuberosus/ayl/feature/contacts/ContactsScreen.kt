@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ContactsScreenRoot() {
@@ -17,7 +17,7 @@ fun ContactsScreenRoot() {
 
 @Composable
 private fun ContactsScreen(
-    viewModel: ContactsViewModel = viewModel()
+    viewModel: ContactsViewModel = koinViewModel()
 ) {
     Box(
         modifier = Modifier
