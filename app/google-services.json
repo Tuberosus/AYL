@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "383635082064",
+    "project_id": "ayl-app-4443d",
+    "storage_bucket": "ayl-app-4443d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383635082064:android:a93e39ce70a9d510b3fa55",
+        "android_client_info": {
+          "package_name": "com.tuberosus.ayl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVlRXNoB9x_9JOKYPzyFhd1zeIwKyLag8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

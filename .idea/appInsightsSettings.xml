@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.tuberosus.ayl" />
+                  <option name="mobileSdkAppId" value="1:383635082064:android:a93e39ce70a9d510b3fa55" />
+                  <option name="projectId" value="ayl-app-4443d" />
+                  <option name="projectNumber" value="383635082064" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
