@@ -11,8 +11,8 @@ import com.tuberosus.ayl.feature.staff.navigation.StaffGraphRoutes
 
 sealed class BottomNavItem(
     val route: Route,
-    @DrawableRes val icon: Int,
-    @StringRes val title: Int,
+    @field:DrawableRes val icon: Int,
+    @field:StringRes val title: Int,
 ) {
     data object Home : BottomNavItem(
         route = HomeGraphRoutes.Graph,
