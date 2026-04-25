@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.feature.news
+package com.tuberosus.ayl.feature.contacts.contacts_head
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,18 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tuberosus.ayl.feature.gallery.GalleryViewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun NewsScreenRoot() {
-    NewsScreen()
+fun ContactsHeadScreenRoot() {
+    ContactsHeadScreen()
 }
 
 @Composable
-private fun NewsScreen(
-    viewModel: GalleryViewModel = koinViewModel()
+private fun ContactsHeadScreen(
+    viewModel: ContactsHeadViewModel = koinViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -26,15 +25,15 @@ private fun NewsScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "NewsScreen"
+            text = "ContactsScreen"
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun NewsScreenPreview() {
+private fun ContactsHeadScreenPreview() {
     AYLTheme {
-        NewsScreenRoot()
+        ContactsHeadScreenRoot()
     }
 }

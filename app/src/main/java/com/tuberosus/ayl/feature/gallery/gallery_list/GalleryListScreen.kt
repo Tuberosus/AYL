@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.feature.staff
+package com.tuberosus.ayl.feature.gallery.gallery_list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,21 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tuberosus.ayl.feature.gallery.GalleryViewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
-class StaffScreen {
+@Composable
+fun GalleryListScreenRoot() {
+    GalleryListScreen()
 }
 
 @Composable
-fun StaffScreenRoot() {
-    StaffScreen()
-}
-
-@Composable
-private fun StaffScreen(
-    viewModel: GalleryViewModel = koinViewModel()
+private fun GalleryListScreen(
+    viewModel: GalleryListViewModel = koinViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -29,15 +25,15 @@ private fun StaffScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "StaffScreen"
+            text = "GalleryScreen"
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun StaffScreenPreview() {
+private fun GalleryListScreenPreview() {
     AYLTheme {
-        StaffScreenRoot()
+        GalleryListScreenRoot()
     }
 }

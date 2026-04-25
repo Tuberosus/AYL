@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.feature.contacts
+package com.tuberosus.ayl.feature.home.about
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,17 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tuberosus.ayl.feature.home.about.AboutViewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ContactsScreenRoot() {
-    ContactsScreen()
+fun AboutScreenRoot() {
+    AboutScreen()
 }
 
 @Composable
-private fun ContactsScreen(
-    viewModel: ContactsViewModel = koinViewModel()
+private fun AboutScreen(
+    viewModel: AboutViewModel = koinViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -25,15 +26,15 @@ private fun ContactsScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "ContactsScreen"
+            text = "AboutScreen"
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ContactsScreenPreview() {
+private fun AboutScreenPreview() {
     AYLTheme {
-        ContactsScreenRoot()
+        AboutScreenRoot()
     }
 }

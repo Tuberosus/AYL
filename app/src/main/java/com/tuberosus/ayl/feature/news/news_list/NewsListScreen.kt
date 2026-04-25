@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.feature.home
+package com.tuberosus.ayl.feature.news.news_list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,18 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tuberosus.ayl.feature.gallery.GalleryViewModel
+import com.tuberosus.ayl.feature.gallery.gallery_list.GalleryListViewModel
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreenRoot() {
-    HomeScreen()
+fun NewsListScreenRoot() {
+    NewsListScreen()
 }
 
 @Composable
-private fun HomeScreen(
-    viewModel: GalleryViewModel = koinViewModel()
+private fun NewsListScreen(
+    viewModel: GalleryListViewModel = koinViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -26,15 +26,15 @@ private fun HomeScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "HomeScreen"
+            text = "NewsScreen"
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenPreview() {
+private fun NewsListScreenPreview() {
     AYLTheme {
-        HomeScreenRoot()
+        NewsListScreenRoot()
     }
 }
