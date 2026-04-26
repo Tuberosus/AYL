@@ -1,4 +1,6 @@
 package com.tuberosus.ayl.feature.home.about
 
-class AboutAction {
+sealed interface AboutAction {
+    data object OnAdvantagesClick : AboutAction
+    data object OnDocumentsClick : AboutAction
 }
