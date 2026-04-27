@@ -30,7 +30,9 @@ fun NavGraphBuilder.homeGraph(
             )
         }
         composable<HomeGraphRoutes.Documents> {
-            DocumentsScreenRoot()
+            DocumentsScreenRoot(
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

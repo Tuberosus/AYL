@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +20,8 @@ import com.tuberosus.ayl.R
 @Composable
 fun BackTopAppBar(
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    title: @Composable () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -32,6 +34,12 @@ fun BackTopAppBar(
                 painter = painterResource(R.drawable.ic_arrow_back_ios),
                 contentDescription = stringResource(R.string.back)
             )
+        }
+        Box(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            title()
         }
     }
 }
