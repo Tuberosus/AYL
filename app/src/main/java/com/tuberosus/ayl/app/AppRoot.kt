@@ -9,7 +9,7 @@ import com.tuberosus.ayl.navigation.AppBottomBar
 import com.tuberosus.ayl.navigation.AppNavGraph
 
 @Composable
-fun App() {
+fun AppRoot() {
     val navController = rememberNavController()
 
     Scaffold(

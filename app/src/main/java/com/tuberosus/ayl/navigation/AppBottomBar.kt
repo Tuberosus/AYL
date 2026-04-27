@@ -1,13 +1,21 @@
 package com.tuberosus.ayl.navigation
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -18,6 +26,7 @@ import com.tuberosus.ayl.feature.gallery.navigation.GalleryGraphRoutes
 import com.tuberosus.ayl.feature.home.navigation.HomeGraphRoutes
 import com.tuberosus.ayl.feature.news.navigation.NewsGraphRoutes
 import com.tuberosus.ayl.feature.staff.navigation.StaffGraphRoutes
+import com.tuberosus.ayl.ui.theme.Blue
 
 @Composable
 fun AppBottomBar(navController: NavController) {
@@ -29,7 +38,11 @@ fun AppBottomBar(navController: NavController) {
         BottomNavItem.Contacts
     )
 
-    NavigationBar {
+    NavigationBar(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20)),
+        tonalElevation = 16.dp,
+    ) {
         val backStack by navController.currentBackStackEntryAsState()
 
         items.forEach { item ->
@@ -57,6 +70,11 @@ fun AppBottomBar(navController: NavController) {
 
             NavigationBarItem(
                 selected = selected,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = Blue,
+                    selectedTextColor = Blue,
+                    indicatorColor = Color.Transparent
+                ),
                 onClick = {
                     navController.navigate(item.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
