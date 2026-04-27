@@ -14,5 +14,5 @@ sealed interface HomeGraphRoutes : Route {
     data object Advantages : HomeGraphRoutes
 
     @Serializable
-    data object Documents
+    data object Documents : HomeGraphRoutes
 }

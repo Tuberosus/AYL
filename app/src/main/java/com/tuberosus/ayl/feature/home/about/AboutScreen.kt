@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -42,17 +41,37 @@ import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Green
 import com.tuberosus.ayl.ui.theme.Pink
 import com.tuberosus.ayl.ui.theme.White
+import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AboutScreenRoot(
+    onAdvantagesClick: () -> Unit,
+    onDocumentsClick: () -> Unit,
     viewModel: AboutViewModel = koinViewModel()
 ) {
-    AboutScreen()
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is AboutEvent.OnAdvantagesClick -> onAdvantagesClick()
+            is AboutEvent.OnDocumentsClick -> onDocumentsClick()
+        }
+    }
+
+    AboutScreen(
+        onAdvantagesClick = {
+            viewModel.onAction(AboutAction.OnAdvantagesClick)
+        },
+        onDocumentsClick = {
+            viewModel.onAction(AboutAction.OnDocumentsClick)
+        }
+    )
 }
 
 @Composable
-private fun AboutScreen() {
+private fun AboutScreen(
+    onAdvantagesClick: () -> Unit,
+    onDocumentsClick: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,11 +89,11 @@ private fun AboutScreen() {
         AboutContent()
         Spacer(modifier = Modifier.height(16.dp))
         AdvantagesLine(
-            onClick = {}
+            onClick = onAdvantagesClick
         )
         Spacer(modifier = Modifier.height(16.dp))
         DocumentsButtonWithDescription(
-            onClick = {}
+            onClick = onDocumentsClick
         )
     }
 }
@@ -94,7 +113,7 @@ private fun AboutContent() {
         modifier = Modifier
             .width(80.dp)
             .height(4.dp)
-            .background(Pink) // фиолетовая линия как на скрине
+            .background(Pink)
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -182,7 +201,7 @@ private fun AdvantagesLine(
     }
 }
 
-@Composable fun ColumnScope.DocumentsButtonWithDescription(
+@Composable fun DocumentsButtonWithDescription(
     onClick: () -> Unit,
 ) {
     Text(
@@ -218,6 +237,9 @@ private fun AdvantagesLine(
 @Composable
 private fun AboutScreenPreview() {
     AYLTheme {
-        AboutScreen()
+        AboutScreen(
+            onAdvantagesClick = {},
+            onDocumentsClick = {}
+        )
     }
 }
