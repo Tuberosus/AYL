@@ -25,7 +25,9 @@ fun NavGraphBuilder.homeGraph(
             )
         }
         composable<HomeGraphRoutes.Advantages> {
-            AdvantagesScreenRoot()
+            AdvantagesScreenRoot(
+                onBackClick = { navController.popBackStack() }
+            )
         }
         composable<HomeGraphRoutes.Documents> {
             DocumentsScreenRoot()

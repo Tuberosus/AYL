@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.ui.components.BulletList
+import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Green
 import com.tuberosus.ayl.ui.theme.Pink
@@ -100,21 +101,7 @@ private fun AboutScreen(
 
 @Composable
 private fun AboutContent() {
-    Text(
-        text = "О нас",
-        style = MaterialTheme.typography.headlineMedium,
-        color = MaterialTheme.colorScheme.onBackground,
-        fontWeight = FontWeight.Bold
-    )
-
-    Spacer(modifier = Modifier.height(8.dp))
-
-    Box(
-        modifier = Modifier
-            .width(80.dp)
-            .height(4.dp)
-            .background(Pink)
-    )
+    TitleWithUnderline("О нас")
 
     Spacer(modifier = Modifier.height(16.dp))
 
