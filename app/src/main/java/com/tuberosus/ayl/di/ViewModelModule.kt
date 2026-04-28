@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.di
 
 import com.tuberosus.ayl.feature.contacts.contacts_head.ContactsHeadViewModel
+import com.tuberosus.ayl.feature.contacts.contacts_region.ContactsRegionViewModel
 import com.tuberosus.ayl.feature.gallery.gallery_list.GalleryListViewModel
 import com.tuberosus.ayl.feature.home.about.AboutViewModel
 import com.tuberosus.ayl.feature.home.advantages.AdvantagesViewModel
@@ -18,5 +19,7 @@ val viewModelModule = module {
     viewModelOf(::GalleryListViewModel)
     viewModelOf(::NewsListViewModel)
     viewModelOf(::StaffListViewModel)
+
     viewModelOf(::ContactsHeadViewModel)
+    viewModelOf(::ContactsRegionViewModel)
 }
