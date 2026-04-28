@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.config
 
-import com.tuberosus.ayl.config.RegionContact
+import com.tuberosus.ayl.domain.model.Region
+import com.tuberosus.ayl.domain.model.RegionContact
 
 object CompanyContacts {
     const val SITE = "https://ayl.ru/"
@@ -13,28 +14,37 @@ object CompanyContacts {
 
 object RegionContacts {
     val contacts = listOf(
-        RegionContact(
-            telegram = "https://t.me/aylaltay"
+        Region(
+            name = "Республика Алтай",
+            contacts = RegionContact(
+                telegram = "https://t.me/aylaltay"
+            )
         ),
-        RegionContact(
-            telegram = "https://t.me/ayl_krd",
-            site = "https://aylkrd.tilda.ws",
-            vk = "https://m.vk.com/ayl_krd"
+        Region(
+            name = "Краснодарский край",
+            contacts = RegionContact(
+                telegram = "https://t.me/ayl_krd",
+                site = "https://aylkrd.tilda.ws",
+                vk = "https://m.vk.com/ayl_krd"
+            )
         ),
-        RegionContact(
-            vk = "https://m.vk.com/club241886"
+        Region(
+            name = "Барнаул",
+            contacts = RegionContact(
+                vk = "https://m.vk.com/club241886"
+            )
         ),
-        RegionContact(
-            telegram = "https://t.me/AYLOrel"
+        Region(
+            name = "Орёл",
+            contacts = RegionContact(
+                telegram = "https://t.me/AYLOrel"
+            )
         ),
-        RegionContact(
-            telegram = "https://t.me/tomskaul"
+        Region(
+            name = "Томск",
+            contacts = RegionContact(
+                telegram = "https://t.me/tomskaul"
+            )
         )
     )
 }
-
-data class RegionContact(
-    val telegram: String? = null,
-    val site: String? = null,
-    val vk: String? = null,
-)
