@@ -1,6 +1,5 @@
 package com.tuberosus.ayl.feature.home.documents
 
-import android.webkit.WebView
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -31,13 +30,7 @@ fun DocumentsScreenRoot(
         state = state,
         onBackClick = {
             viewModel.onAction(DocumentsAction.OnBackClick)
-        },
-        setWebView = {
-            viewModel.onAction(DocumentsAction.SetWebView(it))
-        },
-        onLoadingChange = {
-            viewModel.onAction(DocumentsAction.LoadingChange(it))
-        },
+        }
     )
 }
 
@@ -45,8 +38,6 @@ fun DocumentsScreenRoot(
 private fun DocumentsScreen(
     state: DocumentsState,
     onBackClick: () -> Unit,
-    setWebView: (WebView) -> Unit,
-    onLoadingChange: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -57,8 +48,6 @@ private fun DocumentsScreen(
         )
         AylWebView(
             url = state.url,
-            setWebView = setWebView,
-            onLoadingChange = onLoadingChange,
         )
 
     }
@@ -71,8 +60,6 @@ private fun DocumentsScreenPreview() {
         DocumentsScreen(
             state = DocumentsState(),
             onBackClick = {},
-            setWebView = {},
-            onLoadingChange = {},
         )
     }
 }

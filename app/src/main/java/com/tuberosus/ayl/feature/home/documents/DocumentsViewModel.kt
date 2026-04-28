@@ -1,13 +1,11 @@
 package com.tuberosus.ayl.feature.home.documents
 
-import android.webkit.WebView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DocumentsViewModel : ViewModel() {
@@ -20,31 +18,13 @@ class DocumentsViewModel : ViewModel() {
     fun onAction(action: DocumentsAction) {
         when (action) {
             is DocumentsAction.OnBackClick ->
-                sendOnBackEvent()
-
-            is DocumentsAction.SetWebView ->
-                setWebView(action.webView)
-
-            is DocumentsAction.LoadingChange ->
-                changeLoadingValue(action.isLoading)
+                sendEvent(DocumentsEvent.OnBackClick)
         }
     }
 
-    private fun sendOnBackEvent() {
+    private fun sendEvent(event: DocumentsEvent) {
         viewModelScope.launch {
-            eventChannel.send(DocumentsEvent.OnBackClick)
-        }
-    }
-
-    private fun setWebView(webView: WebView) {
-        _state.update {
-            it.copy(webView = webView)
-        }
-    }
-
-    private fun changeLoadingValue(isLoading: Boolean) {
-        _state.update {
-            it.copy(isLoading = isLoading)
+            eventChannel.send(event)
         }
     }
 }
