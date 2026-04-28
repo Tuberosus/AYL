@@ -27,6 +27,11 @@ android {
             "DOCUMENTS_URL",
             "\"${project.property("DOCUMENTS_URL")}\""
         )
+        buildConfigField(
+            "String",
+            "DONATION_URL",
+            "\"${project.property("DONATION_URL")}\""
+        )
     }
 
     buildFeatures {

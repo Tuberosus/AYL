@@ -12,4 +12,7 @@ sealed interface ContactsGraphRoutes : Route {
 
     @Serializable
     data object ContactsRegion : ContactsGraphRoutes
+
+    @Serializable
+    data object Donation : ContactsGraphRoutes
 }
