@@ -7,6 +7,6 @@ sealed interface ContactsHeadAction {
     data object OnTelegramClick : ContactsHeadAction
     data object OnYoutubeClick : ContactsHeadAction
     data object OnVkClick : ContactsHeadAction
-    data object OnRegionClick : ContactsHeadAction
+    data object OnRegionsContactsClick : ContactsHeadAction
     data object OnDonationClick : ContactsHeadAction
 }

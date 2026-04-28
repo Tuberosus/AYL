@@ -10,7 +10,10 @@ fun NavGraphBuilder.contactsGraph() {
         startDestination = ContactsGraphRoutes.ContactsHead
     ) {
         composable<ContactsGraphRoutes.ContactsHead> {
-            ContactsHeadScreenRoot()
+            ContactsHeadScreenRoot(
+                onRegionsContactsClick = {},
+                onDonationClick = {}
+            )
         }
     }
 }
