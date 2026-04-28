@@ -3,6 +3,7 @@ package com.tuberosus.ayl.feature.contacts.contacts_region
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -118,31 +120,44 @@ private fun RegionContactItem(
             )
             Spacer(modifier = Modifier.height(4.dp))
             region.contacts.telegram?.let {
-                Text(
-                    modifier = Modifier
-                        .clickable(
-                            onClick = { onSocialClick(it) }
-                        ),
-                    text = "Телеграм-канал",
-                    color = Pink
+                TextLink(
+                    onClick = { onSocialClick(it) },
+                    text = "Телеграм-канал"
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
             region.contacts.site?.let {
-                Text(
-                    text = "Сайт",
-                    color = Pink
+                TextLink(
+                    onClick = { onSocialClick(it) },
+                    text = "Сайт"
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
             region.contacts.vk?.let {
-                Text(
-                    text = "Вконтакте",
-                    color = Pink
+                TextLink(
+                    onClick = { onSocialClick(it) },
+                    text = "Вконтакте"
                 )
             }
         }
     }
+}
+
+@Composable
+private fun TextLink(
+    onClick: () -> Unit,
+    text: String
+) {
+    Text(
+        modifier = Modifier
+            .clickable(
+                onClick = onClick,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ),
+        text = text,
+        color = Pink
+    )
 }
 
 @Preview(showBackground = true)

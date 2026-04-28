@@ -25,6 +25,6 @@ fun AppNavGraph(
         galleryGraph()
         newsGraph()
         staffGraph()
-        contactsGraph()
+        contactsGraph(navHostController)
     }
 }
