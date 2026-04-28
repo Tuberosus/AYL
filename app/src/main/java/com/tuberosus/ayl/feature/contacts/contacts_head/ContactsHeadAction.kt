@@ -1,4 +1,12 @@
 package com.tuberosus.ayl.feature.contacts.contacts_head
 
-class ContactsHeadAction {
+sealed interface ContactsHeadAction {
+    data object OnSiteClick : ContactsHeadAction
+    data object OnEmailClick : ContactsHeadAction
+    data object OnPhoneClick : ContactsHeadAction
+    data object OnTelegramClick : ContactsHeadAction
+    data object OnYoutubeClick : ContactsHeadAction
+    data object OnVkClick : ContactsHeadAction
+    data object OnRegionClick : ContactsHeadAction
+    data object OnDonationClick : ContactsHeadAction
 }

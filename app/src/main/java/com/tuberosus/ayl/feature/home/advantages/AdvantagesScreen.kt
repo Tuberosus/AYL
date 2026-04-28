@@ -231,7 +231,7 @@ fun StarBulletItem(text: String) {
     ) {
         Text(
             modifier = Modifier
-                .offset(y = (-8).dp),
+                .offset(y = (-6).dp),
             text = "★",
             color = Green,
             fontSize = 24.sp,
