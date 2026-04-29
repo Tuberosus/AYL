@@ -2,7 +2,6 @@ package com.tuberosus.ayl.feature.staff.staff_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,15 +21,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import coil3.request.CachePolicy
-import coil3.request.ImageRequest
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.ui.components.FullScreenProgressBar
@@ -78,28 +74,19 @@ private fun StaffListScreen(
 
 @Composable
 private fun StaffColumn(staff: List<Staff>) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(28.dp)
-    ) {
+    LazyColumn {
         items(
             items = staff,
             key = { it.name }
         ) { item ->
             StaffItem(item)
+            Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
 
 @Composable
 private fun StaffItem(staffItem: Staff) {
-    val context = LocalContext.current
-    val imageRequest = ImageRequest.Builder(context)
-        .data(staffItem.photoName)
-        .size(80, 80)
-        .diskCachePolicy(CachePolicy.DISABLED)
-        .memoryCachePolicy(CachePolicy.ENABLED)
-        .build()
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,7 +100,7 @@ private fun StaffItem(staffItem: Staff) {
                     color = Green,
                     shape = CircleShape
                 ),
-            model = imageRequest,
+            model = staffItem.photoName,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             placeholder = painterResource(R.drawable.ayl_logo_placeholder),
@@ -123,6 +110,8 @@ private fun StaffItem(staffItem: Staff) {
         Column {
             Row {
                 Text(
+                    modifier = Modifier
+                        .weight(1f),
                     text = staffItem.name,
                     style = MaterialTheme.typography.labelLarge,
                     fontSize = 20.sp
