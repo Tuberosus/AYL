@@ -24,4 +24,6 @@ val viewModelModule = module {
     viewModelOf(::ContactsHeadViewModel)
     viewModelOf(::ContactsRegionViewModel)
     viewModelOf(::DonationViewModel)
+
+
 }
