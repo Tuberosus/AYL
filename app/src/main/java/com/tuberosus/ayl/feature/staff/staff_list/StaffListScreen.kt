@@ -29,6 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.staff.Staff
+import com.tuberosus.ayl.domain.util.AppError
+import com.tuberosus.ayl.ui.components.ErrorView
 import com.tuberosus.ayl.ui.components.FullScreenProgressBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.theme.AYLTheme
@@ -66,8 +68,11 @@ private fun StaffListScreen(
             state.isLoading ->
                 FullScreenProgressBar()
 
-            state.staff.isNullOrEmpty().not() ->
+            state.staff != null ->
                 StaffColumn(state.staff)
+
+            state.error != null ->
+                ErrorView(state.error)
         }
     }
 }
@@ -166,6 +171,20 @@ private fun StaffListScreenPreview() {
                         telegramLink = "https://t.me/ivan"
                     )
                 )
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StaffListScreenErrorPreview() {
+    AYLTheme {
+        StaffListScreen(
+            state = StaffListState(
+                isLoading = false,
+                staff = null,
+                error = AppError.Network
             )
         )
     }
