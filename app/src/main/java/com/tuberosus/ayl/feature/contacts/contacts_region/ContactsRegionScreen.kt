@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tuberosus.ayl.R
-import com.tuberosus.ayl.domain.model.Region
+import com.tuberosus.ayl.domain.model.contacts.Region
 import com.tuberosus.ayl.ui.components.BackTopAppBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.theme.AYLTheme

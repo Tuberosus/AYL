@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.domain.model
+package com.tuberosus.ayl.domain.model.contacts
 
 data class Region(
     val name: String,

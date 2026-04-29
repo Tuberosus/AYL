@@ -1,7 +1,7 @@
 package com.tuberosus.ayl.config
 
-import com.tuberosus.ayl.domain.model.Region
-import com.tuberosus.ayl.domain.model.RegionContact
+import com.tuberosus.ayl.domain.model.contacts.Region
+import com.tuberosus.ayl.domain.model.contacts.RegionContact
 
 object CompanyContacts {
     const val SITE = "https://ayl.ru/"
