@@ -1,5 +1,6 @@
 package com.tuberosus.ayl.feature.news.news_list
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -95,6 +96,7 @@ private fun NewsCard(newsItem: News) {
     Surface(
         shape = RoundedCornerShape(16.dp),
         shadowElevation = 2.dp,
+        tonalElevation = if (isSystemInDarkTheme()) 4.dp else 0.dp
     ) {
         Column(
             modifier = Modifier
@@ -153,10 +155,10 @@ private fun NewsCard(newsItem: News) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 private fun NewsListScreenPreview() {
-    AYLTheme {
+    AYLTheme(darkTheme = true) {
         NewsListScreen(
             state = NewsListState(
                 isLoading = false,
