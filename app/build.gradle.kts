@@ -79,6 +79,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.core)
 
+    implementation(libs.accompanist.placeholder.material)
+
     implementation(libs.bundles.coil)
     implementation(libs.bundles.koin)
 

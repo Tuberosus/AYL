@@ -17,6 +17,7 @@ google-services = "4.4.4"
 firebase-bom = "34.12.0"
 coroutines-play-services = "1.10.2"
 coreSplashscreen = "1.2.0"
+accompanist-placeholder = "0.34.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,8 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 
+accompanist-placeholder-material = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist-placeholder" }
+
 # Coil
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
@@ -52,7 +55,6 @@ koin-androidx-compose-navigation = { group = "io.insert-koin", name = "koin-andr
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutines-play-services" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
