@@ -1,9 +1,12 @@
 package com.tuberosus.ayl.data.mapper
 
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.tuberosus.ayl.data.remote.firestore.dto.NewsDto
 import com.tuberosus.ayl.data.remote.firestore.dto.StaffDto
+import com.tuberosus.ayl.domain.model.news.News
 import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.util.AppError
+import java.time.Instant
 
 fun StaffDto.toStaff() = Staff(
     name = name,
@@ -11,6 +14,13 @@ fun StaffDto.toStaff() = Staff(
     bio = bio,
     photoName = photoName,
     telegramLink = telegramLink
+)
+
+fun NewsDto.toNews() = News(
+    title = title,
+    content = content,
+    imageUrl = imageUrl,
+    date = date?.toDate()?.time ?: 0L
 )
 
 fun Throwable.toAppError(): AppError {
