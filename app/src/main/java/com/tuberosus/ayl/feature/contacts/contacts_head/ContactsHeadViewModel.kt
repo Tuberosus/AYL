@@ -18,33 +18,27 @@ class ContactsHeadViewModel : ViewModel() {
 
     fun onAction(action: ContactsHeadAction) {
         val contactsState = state.value.contacts
-        sendEvent(
             when (action) {
                 is ContactsHeadAction.OnSiteClick ->
-                    ContactsHeadEvents.OnSiteClick(contactsState.site)
+                    sendEvent(ContactsHeadEvents.OnSiteClick(contactsState.site))
 
                 is ContactsHeadAction.OnEmailClick ->
-                    ContactsHeadEvents.OnEmailClick(contactsState.email)
+                    sendEvent(ContactsHeadEvents.OnEmailClick(contactsState.email))
 
                 is ContactsHeadAction.OnPhoneClick ->
-                    ContactsHeadEvents.OnPhoneClick(contactsState.phone)
+                    sendEvent(ContactsHeadEvents.OnPhoneClick(contactsState.phone))
 
                 is ContactsHeadAction.OnTelegramClick ->
-                    ContactsHeadEvents.OnTelegramClick(contactsState.telegram)
+                    sendEvent(ContactsHeadEvents.OnTelegramClick(contactsState.telegram))
 
                 is ContactsHeadAction.OnVkClick ->
-                    ContactsHeadEvents.OnVkClick((contactsState.vk))
+                    sendEvent(ContactsHeadEvents.OnVkClick((contactsState.vk)))
 
                 is ContactsHeadAction.OnYoutubeClick ->
-                    ContactsHeadEvents.OnYoutubeClick(contactsState.youtube)
+                    sendEvent(ContactsHeadEvents.OnYoutubeClick(contactsState.youtube))
 
-                is ContactsHeadAction.OnRegionsContactsClick ->
-                    ContactsHeadEvents.OnRegionsContactsClick
-
-                is ContactsHeadAction.OnDonationClick ->
-                    ContactsHeadEvents.OnDonationClick
+              else -> Unit
             }
-        )
     }
 
     private fun sendEvent(event: ContactsHeadEvents) {

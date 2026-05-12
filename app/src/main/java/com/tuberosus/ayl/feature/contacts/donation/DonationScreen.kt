@@ -18,15 +18,9 @@ fun DonationScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            is DonationEvent.OnBackClick -> { onBackClick() }
-        }
-    }
-
     DonationScreen(
         state = state,
-        onBackClick = { viewModel.onAction(DonationAction.OnBackClick) }
+        onBackClick = onBackClick
     )
 }
 

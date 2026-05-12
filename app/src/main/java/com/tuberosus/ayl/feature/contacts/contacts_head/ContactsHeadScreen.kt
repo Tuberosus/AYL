@@ -92,15 +92,23 @@ fun ContactsHeadScreenRoot(
                     uriString = event.link
                 )
             }
-
-            is ContactsHeadEvents.OnRegionsContactsClick -> onRegionsContactsClick()
-            is ContactsHeadEvents.OnDonationClick -> onDonationClick()
         }
     }
 
     ContactsHeadScreen(
         state = state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when (action) {
+                is ContactsHeadAction.OnRegionsContactsClick ->
+                    onRegionsContactsClick()
+
+                is ContactsHeadAction.OnDonationClick ->
+                    onDonationClick()
+
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
     )
 }
 

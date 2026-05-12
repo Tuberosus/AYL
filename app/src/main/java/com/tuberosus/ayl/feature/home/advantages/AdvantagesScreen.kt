@@ -26,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,24 +35,14 @@ import com.tuberosus.ayl.ui.components.layouts.TopBarWithBackLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Blue
 import com.tuberosus.ayl.ui.theme.Green
-import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import com.tuberosus.ayl.ui.util.withNoBreakShortWords
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AdvantagesScreenRoot(
     onBackClick: () -> Unit,
-    viewModel: AdvantagesViewModel = koinViewModel(),
 ) {
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            is AdvantagesEvent.OnBackClick -> onBackClick()
-        }
-    }
     AdvantagesScreen(
-        onBackClick = {
-            viewModel.onAction(AdvantagesAction.OnBackClick)
-        }
+        onBackClick = onBackClick
     )
 }
 

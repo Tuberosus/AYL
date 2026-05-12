@@ -6,11 +6,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,30 +19,16 @@ import com.tuberosus.ayl.ui.components.AylClickableRow
 import com.tuberosus.ayl.ui.components.BulletList
 import com.tuberosus.ayl.ui.components.layouts.LogoLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
-import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import com.tuberosus.ayl.ui.util.withNoBreakShortWords
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AboutScreenRoot(
     onAdvantagesClick: () -> Unit,
     onDocumentsClick: () -> Unit,
-    viewModel: AboutViewModel = koinViewModel()
 ) {
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            is AboutEvent.OnAdvantagesClick -> onAdvantagesClick()
-            is AboutEvent.OnDocumentsClick -> onDocumentsClick()
-        }
-    }
-
     AboutScreen(
-        onAdvantagesClick = {
-            viewModel.onAction(AboutAction.OnAdvantagesClick)
-        },
-        onDocumentsClick = {
-            viewModel.onAction(AboutAction.OnDocumentsClick)
-        }
+        onAdvantagesClick = onAdvantagesClick,
+        onDocumentsClick = onDocumentsClick
     )
 }
 
@@ -131,7 +115,8 @@ private fun AboutContent() {
     )
 }
 
-@Composable fun DocumentsButtonWithDescription(
+@Composable
+fun DocumentsButtonWithDescription(
     onClick: () -> Unit,
 ) {
     Text(

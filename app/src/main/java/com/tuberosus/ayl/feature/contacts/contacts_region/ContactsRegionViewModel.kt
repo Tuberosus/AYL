@@ -17,11 +17,9 @@ class ContactsRegionViewModel : ViewModel() {
 
     fun onAction(action: ContactsRegionAction) {
         when (action) {
-            is ContactsRegionAction.OnBackClick ->
-                sendEvent(ContactsRegionEvent.OnBackClick)
-
             is ContactsRegionAction.OnSocialMedialClick ->
                 sendEvent(ContactsRegionEvent.OnSocialMedialClick(action.link))
+            else -> Unit
         }
     }
 

@@ -1,6 +1,5 @@
 package com.tuberosus.ayl.feature.staff.staff_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tuberosus.ayl.domain.repository.StaffRepository

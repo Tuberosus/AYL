@@ -41,7 +41,6 @@ fun ContactsRegionScreenRoot(
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is ContactsRegionEvent.OnBackClick -> onBackClick()
             is ContactsRegionEvent.OnSocialMedialClick -> {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -54,7 +53,14 @@ fun ContactsRegionScreenRoot(
 
     ContactsRegionScreen(
         state = state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when (action) {
+                is ContactsRegionAction.OnBackClick ->
+                    onBackClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
     )
 }
 

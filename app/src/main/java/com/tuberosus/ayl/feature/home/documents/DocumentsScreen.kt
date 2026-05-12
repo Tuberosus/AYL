@@ -10,7 +10,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tuberosus.ayl.ui.components.AylWebView
 import com.tuberosus.ayl.ui.components.BackTopAppBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
-import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -20,17 +19,9 @@ fun DocumentsScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            is DocumentsEvent.OnBackClick -> onBackClick()
-        }
-    }
-
     DocumentsScreen(
         state = state,
-        onBackClick = {
-            viewModel.onAction(DocumentsAction.OnBackClick)
-        }
+        onBackClick = onBackClick
     )
 }
 
