@@ -26,6 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +37,7 @@ import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Blue
 import com.tuberosus.ayl.ui.theme.Green
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
+import com.tuberosus.ayl.ui.util.withNoBreakShortWords
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -63,9 +66,12 @@ private fun AdvantagesScreen(
         onBackClick = onBackClick
     ) {
         Text(
-            text = "Мы разработали собственные подходы и методику, которая помогает участникам проходить обучение в комфортной атмосфере и развивать свои способности.",
-            style = MaterialTheme.typography.bodyLarge,
-            lineHeight = 34.sp
+            text = "Мы разработали собственные подходы и методику, которая помогает участникам проходить обучение в комфортной атмосфере и развивать свои способности."
+                .withNoBreakShortWords(),
+            style = MaterialTheme.typography.bodyLarge.copy(
+                lineBreak = LineBreak.Paragraph,
+            ),
+            lineHeight = 20.sp
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -134,9 +140,11 @@ private fun SectionBlock(
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            lineHeight = 34.sp
+            text = text.withNoBreakShortWords(),
+            style = MaterialTheme.typography.bodyLarge.copy(
+                lineBreak = LineBreak.Paragraph,
+            ),
+            lineHeight = 20.sp
         )
     }
 }
@@ -171,7 +179,9 @@ private fun AdvantagesExpandableSection() {
 
             Text(
                 text = "Чем программа АЮЛ отличается от остальных?",
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    lineBreak = LineBreak.Heading,
+                ),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f)
             )
@@ -197,7 +207,7 @@ private fun AdvantagesExpandableSection() {
                 modifier = Modifier.padding(top = 20.dp),
             ) {
                 items.forEach { text ->
-                    StarBulletItem(text)
+                    StarBulletItem(text.withNoBreakShortWords())
                     Spacer(modifier = Modifier.height(18.dp))
                 }
             }
@@ -221,7 +231,9 @@ fun StarBulletItem(text: String) {
         Spacer(modifier = Modifier.width(14.dp))
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                lineBreak = LineBreak.Paragraph,
+            ),
             modifier = Modifier
                 .weight(1f)
         )

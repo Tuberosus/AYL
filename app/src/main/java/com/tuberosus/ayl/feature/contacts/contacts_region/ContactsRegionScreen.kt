@@ -28,6 +28,7 @@ import com.tuberosus.ayl.ui.components.layouts.TopBarWithBackLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Pink
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
+import com.tuberosus.ayl.ui.util.withNoBreakShortWords
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -67,7 +68,8 @@ private fun ContactsRegionScreen(
         onBackClick = { onAction(ContactsRegionAction.OnBackClick) }
     ) {
         Text(
-            text = "Наша ассоциация проводит мероприятия по всей России. Узнать о событиях в регионах вы можете в социальных сетях!",
+            text = "Наша ассоциация проводит мероприятия по всей России. Узнать о событиях в регионах вы можете в социальных сетях!"
+                .withNoBreakShortWords(),
             style = MaterialTheme.typography.bodyLarge,
         )
 

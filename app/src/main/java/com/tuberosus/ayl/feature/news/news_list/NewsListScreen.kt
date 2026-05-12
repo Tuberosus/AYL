@@ -62,7 +62,7 @@ private fun NewsListScreen(
                 end = 24.dp,
             )
     ) {
-        TitleWithUnderline("Штат АЮЛ")
+        TitleWithUnderline("Новости")
         Spacer(modifier = Modifier.height(4.dp))
 
         when {

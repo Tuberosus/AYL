@@ -6,18 +6,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.Hyphens
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tuberosus.ayl.ui.components.AylButton
 import com.tuberosus.ayl.ui.components.AylClickableRow
 import com.tuberosus.ayl.ui.components.BulletList
 import com.tuberosus.ayl.ui.components.layouts.LogoLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
+import com.tuberosus.ayl.ui.util.withNoBreakShortWords
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -68,9 +73,12 @@ private fun AboutScreen(
 private fun AboutContent() {
     Text(
         text = "Мы молодёжная некоммерческая организация",
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleMedium.copy(
+            lineBreak = LineBreak.Heading,
+        ),
         color = MaterialTheme.colorScheme.onBackground,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        lineHeight = 20.sp
     )
 
     Spacer(modifier = Modifier.height(8.dp))
@@ -78,8 +86,11 @@ private fun AboutContent() {
     Text(
         text = "Проводим лидерские тренинги для молодёжи более 30 лет. " +
                 "Обучение проходит по авторским программам АЮЛ®",
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodyMedium.copy(
+            lineBreak = LineBreak.Paragraph,
+        ),
         color = MaterialTheme.colorScheme.onBackground,
+        lineHeight = 20.sp
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -88,7 +99,8 @@ private fun AboutContent() {
         text = "Проводим тренинги в разных форматах:",
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onBackground,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        lineHeight = 20.sp
     )
 
     Spacer(modifier = Modifier.height(8.dp))
@@ -124,13 +136,19 @@ private fun AboutContent() {
 ) {
     Text(
         text = buildAnnotatedString {
-            append("Ознакомится с краткой информацией об организации и учредительными документами вы можете по ")
+            append(
+                "Ознакомится с краткой информацией об организации и учредительными документами вы можете по "
+                    .withNoBreakShortWords()
+            )
             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                 append("кнопке ниже")
             }
         },
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F)
+        style = MaterialTheme.typography.bodyMedium.copy(
+            lineBreak = LineBreak.Paragraph,
+        ),
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6F),
+        lineHeight = 18.sp
     )
     Spacer(modifier = Modifier.height(8.dp))
     AylButton(

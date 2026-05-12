@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun BulletList(items: List<String>) {
@@ -25,6 +26,7 @@ fun BulletList(items: List<String>) {
                     text = item,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
+                    lineHeight = 18.sp
                 )
             }
         }
