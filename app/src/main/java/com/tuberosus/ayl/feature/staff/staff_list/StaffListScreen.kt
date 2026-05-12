@@ -1,7 +1,9 @@
 package com.tuberosus.ayl.feature.staff.staff_list
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +23,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.tuberosus.ayl.R
@@ -35,6 +39,7 @@ import com.tuberosus.ayl.ui.components.FullScreenProgressBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Green
+import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -42,15 +47,30 @@ fun StaffListScreenRoot(
     viewModel: StaffListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is StaffListEvent.OnTgClick -> {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    event.telegram.toUri()
+                )
+                context.startActivity(intent)
+            }
+        }
+    }
 
     StaffListScreen(
-        state = state
+        state = state,
+        onAction = viewModel::onAction
     )
 }
 
 @Composable
 private fun StaffListScreen(
-    state: StaffListState
+    state: StaffListState,
+    onAction: (StaffListAction) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -69,7 +89,14 @@ private fun StaffListScreen(
                 FullScreenProgressBar()
 
             state.staff != null ->
-                StaffColumn(state.staff)
+                StaffColumn(
+                    staff = state.staff,
+                    onTgClick = {
+                        onAction(
+                            StaffListAction.OnTgClick(it)
+                        )
+                    }
+                )
 
             state.error != null ->
                 ErrorView(state.error)
@@ -78,20 +105,29 @@ private fun StaffListScreen(
 }
 
 @Composable
-private fun StaffColumn(staff: List<Staff>) {
+private fun StaffColumn(
+    staff: List<Staff>,
+    onTgClick: (String) -> Unit,
+) {
     LazyColumn {
         items(
             items = staff,
             key = { it.name }
         ) { item ->
-            StaffItem(item)
+            StaffItem(
+                staffItem = item,
+                onTgClick = { onTgClick(it) },
+            )
             Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
 
 @Composable
-private fun StaffItem(staffItem: Staff) {
+private fun StaffItem(
+    staffItem: Staff,
+    onTgClick: (String) -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -124,7 +160,10 @@ private fun StaffItem(staffItem: Staff) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Image(
                     modifier = Modifier
-                        .size(24.dp),
+                        .size(24.dp)
+                        .clickable {
+                            onTgClick(staffItem.telegramLink)
+                        },
                     painter = painterResource(R.drawable.ic_telegram),
                     contentDescription = null
                 )
@@ -153,6 +192,7 @@ private fun StaffItem(staffItem: Staff) {
 private fun StaffListScreenPreview() {
     AYLTheme {
         StaffListScreen(
+            onAction = {},
             state = StaffListState(
                 isLoading = false,
                 staff = listOf(
@@ -181,6 +221,7 @@ private fun StaffListScreenPreview() {
 private fun StaffListScreenErrorPreview() {
     AYLTheme {
         StaffListScreen(
+            onAction = {},
             state = StaffListState(
                 isLoading = false,
                 staff = null,

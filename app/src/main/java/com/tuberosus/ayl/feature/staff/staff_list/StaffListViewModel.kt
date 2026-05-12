@@ -5,19 +5,31 @@ import androidx.lifecycle.viewModelScope
 import com.tuberosus.ayl.domain.repository.StaffRepository
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class StaffListViewModel(
     private val staffRepository: StaffRepository
 ) : ViewModel() {
+    private val eventChannel = Channel<StaffListEvent>()
+    val events = eventChannel.receiveAsFlow()
+
     private var _state = MutableStateFlow(StaffListState())
     val state = _state.asStateFlow()
 
     init {
         getStaff()
+    }
+
+    fun onAction(action: StaffListAction) {
+        when (action) {
+            is StaffListAction.OnTgClick ->
+                sendEvent(StaffListEvent.OnTgClick(action.telegram))
+        }
     }
 
     private fun getStaff() {
@@ -40,6 +52,12 @@ class StaffListViewModel(
                         )
                     }
                 }
+        }
+    }
+
+    private fun sendEvent(event: StaffListEvent) {
+        viewModelScope.launch {
+            eventChannel.send(event)
         }
     }
 }
