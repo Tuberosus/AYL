@@ -107,22 +107,22 @@ private fun RegionContactItem(
             Text(
                 text = region.name
             )
-            Spacer(modifier = Modifier.height(4.dp))
             region.contacts.telegram?.let {
+                Spacer(modifier = Modifier.height(4.dp))
                 TextLink(
                     onClick = { onSocialClick(it) },
                     text = "Телеграм-канал"
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
             region.contacts.site?.let {
+                Spacer(modifier = Modifier.height(4.dp))
                 TextLink(
                     onClick = { onSocialClick(it) },
                     text = "Сайт"
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
             region.contacts.vk?.let {
+                Spacer(modifier = Modifier.height(4.dp))
                 TextLink(
                     onClick = { onSocialClick(it) },
                     text = "Вконтакте"
