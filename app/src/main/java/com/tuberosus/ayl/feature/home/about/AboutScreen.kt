@@ -1,12 +1,7 @@
 package com.tuberosus.ayl.feature.home.about
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,9 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tuberosus.ayl.ui.components.AylButton
 import com.tuberosus.ayl.ui.components.AylClickableRow
-import com.tuberosus.ayl.ui.components.AylLogo
 import com.tuberosus.ayl.ui.components.BulletList
-import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.LogoLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
@@ -54,13 +48,9 @@ private fun AboutScreen(
     onAdvantagesClick: () -> Unit,
     onDocumentsClick: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+    LogoLayout(
+        title = "О нас"
     ) {
-        AylLogo()
         AboutContent()
         Spacer(modifier = Modifier.height(16.dp))
         AylClickableRow(
@@ -76,10 +66,6 @@ private fun AboutScreen(
 
 @Composable
 private fun AboutContent() {
-    TitleWithUnderline("О нас")
-
-    Spacer(modifier = Modifier.height(16.dp))
-
     Text(
         text = "Мы молодёжная некоммерческая организация",
         style = MaterialTheme.typography.titleMedium,

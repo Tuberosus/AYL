@@ -64,7 +64,7 @@ private fun GalleryListScreen(
             )
     ) {
         TitleWithUnderline("Галерея")
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         when {
             state.isLoading ->

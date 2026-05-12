@@ -8,11 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,8 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.ui.components.AylButton
 import com.tuberosus.ayl.ui.components.AylClickableRow
-import com.tuberosus.ayl.ui.components.AylLogo
-import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.LogoLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Blue
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
@@ -126,17 +121,9 @@ private fun ContactsHeadScreen(
     state: ContactsHeadState,
     onAction: (ContactsHeadAction) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+    LogoLayout(
+        title = "Контакты"
     ) {
-        AylLogo()
-        TitleWithUnderline(
-            text = "Контакты"
-        )
-        Spacer(modifier = Modifier.height(12.dp))
         ContactItem(
             title = "Сайт",
             value = state.contacts.site,
@@ -168,12 +155,12 @@ private fun ContactsHeadScreen(
             onClick = { onAction(ContactsHeadAction.OnRegionsContactsClick) }
         )
         Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.weight(1f))
         AylButton(
             title = "Поддержать нас",
             onClick = { onAction(ContactsHeadAction.OnDonationClick) }
         )
     }
-
 }
 
 @Composable

@@ -32,4 +32,5 @@ fun TitleWithUnderline(
             .height(4.dp)
             .background(Pink)
     )
+    Spacer(modifier = Modifier.height(16.dp))
 }

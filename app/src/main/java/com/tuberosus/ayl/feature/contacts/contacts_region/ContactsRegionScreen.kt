@@ -8,12 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +24,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.contacts.Region
-import com.tuberosus.ayl.ui.components.BackTopAppBar
-import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.TopBarWithBackLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Pink
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
@@ -67,35 +62,21 @@ private fun ContactsRegionScreen(
     state: ContactsRegionState,
     onAction: (ContactsRegionAction) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+    TopBarWithBackLayout(
+        title = "АЮЛ в регионах",
+        onBackClick = { onAction(ContactsRegionAction.OnBackClick) }
     ) {
-        BackTopAppBar(
-            onBackClick = { onAction(ContactsRegionAction.OnBackClick) }
+        Text(
+            text = "Наша ассоциация проводит мероприятия по всей России. Узнать о событиях в регионах вы можете в социальных сетях!",
+            style = MaterialTheme.typography.bodyLarge,
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-        ) {
-            TitleWithUnderline("АЮЛ в регионах")
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Наша ассоциация проводит мероприятия по всей России. Узнать о событиях в регионах вы можете в социальных сетях!",
-                style = MaterialTheme.typography.bodyLarge,
+        state.regions.forEach { region ->
+            Spacer(modifier = Modifier.height(24.dp))
+            RegionContactItem(
+                region = region,
+                onSocialClick = { onAction(ContactsRegionAction.OnSocialMedialClick(it)) }
             )
-
-            state.regions.forEach { region ->
-                Spacer(modifier = Modifier.height(24.dp))
-                RegionContactItem(
-                    region = region,
-                    onSocialClick = { onAction(ContactsRegionAction.OnSocialMedialClick(it)) }
-                )
-            }
         }
     }
 }

@@ -63,7 +63,7 @@ private fun NewsListScreen(
             )
     ) {
         TitleWithUnderline("Штат АЮЛ")
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         when {
             state.isLoading ->

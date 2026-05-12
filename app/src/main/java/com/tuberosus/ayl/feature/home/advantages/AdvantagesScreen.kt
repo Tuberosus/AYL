@@ -6,15 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,8 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tuberosus.ayl.R
-import com.tuberosus.ayl.ui.components.BackTopAppBar
-import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.TopBarWithBackLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Blue
 import com.tuberosus.ayl.ui.theme.Green
@@ -62,68 +58,54 @@ fun AdvantagesScreenRoot(
 private fun AdvantagesScreen(
     onBackClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+    TopBarWithBackLayout(
+        title = "Почему выбирают нас?",
+        onBackClick = onBackClick
     ) {
-        BackTopAppBar(
-            onBackClick = onBackClick
+        Text(
+            text = "Мы разработали собственные подходы и методику, которая помогает участникам проходить обучение в комфортной атмосфере и развивать свои способности.",
+            style = MaterialTheme.typography.bodyLarge,
+            lineHeight = 34.sp
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-        ) {
-            TitleWithUnderline("Почему выбирают нас?")
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
-            Text(
-                text = "Мы разработали собственные подходы и методику, которая помогает участникам проходить обучение в комфортной атмосфере и развивать свои способности.",
-                style = MaterialTheme.typography.bodyLarge,
-                lineHeight = 34.sp
-            )
+        NumberLabel("1")
 
-            Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-            NumberLabel("1")
+        SectionBlock(
+            title = "Молодые учат молодых",
+            text = "Это одна из главных ценностей АЮЛ. Данный принцип позволяет организаторам и участникам говорить на одном языке, что способствует лучшему усвоению новых навыков и знаний."
+        )
 
-            Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(36.dp))
 
-            SectionBlock(
-                title = "Молодые учат молодых",
-                text = "Это одна из главных ценностей АЮЛ. Данный принцип позволяет организаторам и участникам говорить на одном языке, что способствует лучшему усвоению новых навыков и знаний."
-            )
+        NumberLabel("2")
 
-            Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-            NumberLabel("2")
+        SectionBlock(
+            title = "Полное погружение в процесс",
+            text = "В отличие от других организаций, мы проводим конференции (5-дневные тренинги) на территории базы, на которой участники не только проходят обучение, но и живут в течение всего времени. Это позволяет погрузиться в рабочий процесс и, благодаря практическим частям нашей программы, попрактиковаться в изученном материале в режиме \"реального времени\"."
+        )
 
-            Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(36.dp))
 
-            SectionBlock(
-                title = "Полное погружение в процесс",
-                text = "В отличие от других организаций, мы проводим конференции (5-дневные тренинги) на территории базы, на которой участники не только проходят обучение, но и живут в течение всего времени. Это позволяет погрузиться в рабочий процесс и, благодаря практическим частям нашей программы, попрактиковаться в изученном материале в режиме \"реального времени\"."
-            )
+        NumberLabel("3")
 
-            Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-            NumberLabel("3")
+        SectionBlock(
+            title = "Уникальная атмосфера",
+            text = "Важной ценностью АЮЛ является атмосфера сотрудничества и безопасности. На наших " +
+                    "мероприятиях каждый участник может свободно выражать свои мысли, зная, что он будет услышан. " +
+                    "Такая теплая атмосфера остается надолго в сердце каждого, кто хоть раз побывал на нашем тренинге."
+        )
 
-            Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(36.dp))
 
-            SectionBlock(
-                title = "Уникальная атмосфера",
-                text = "Важной ценностью АЮЛ является атмосфера сотрудничества и безопасности. На наших " +
-                        "мероприятиях каждый участник может свободно выражать свои мысли, зная, что он будет услышан. " +
-                        "Такая теплая атмосфера остается надолго в сердце каждого, кто хоть раз побывал на нашем тренинге."
-            )
-
-            Spacer(modifier = Modifier.height(36.dp))
-
-            AdvantagesExpandableSection()
-        }
+        AdvantagesExpandableSection()
     }
 }
 
