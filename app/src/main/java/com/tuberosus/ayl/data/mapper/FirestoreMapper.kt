@@ -8,7 +8,6 @@ import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
 import com.tuberosus.ayl.domain.model.news.News
 import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.util.AppError
-import java.time.Instant
 
 fun StaffDto.toStaff() = Staff(
     name = name,
@@ -19,10 +18,12 @@ fun StaffDto.toStaff() = Staff(
 )
 
 fun NewsDto.toNews() = News(
+    id = id,
     title = title,
     content = content,
     imageUrl = imageUrl,
-    date = date?.toDate()?.time ?: 0L
+    date = date?.toDate()?.time ?: 0L,
+    linkUrl = linkUrl,
 )
 
 fun GalleryPhotoDto.toGalleryPhoto() = GalleryPhoto(

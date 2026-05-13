@@ -1,4 +1,5 @@
 package com.tuberosus.ayl.feature.news.news_list
 
-class NewsListAction {
+sealed interface NewsListAction {
+    data class OnNewsClick(val newsId: String) : NewsListAction
 }

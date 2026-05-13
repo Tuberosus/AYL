@@ -23,7 +23,7 @@ fun AppNavGraph(
     ) {
         homeGraph(navHostController)
         galleryGraph()
-        newsGraph()
+        newsGraph(navHostController)
         staffGraph()
         contactsGraph(navHostController)
     }

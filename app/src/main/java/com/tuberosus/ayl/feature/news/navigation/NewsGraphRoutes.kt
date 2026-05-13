@@ -9,4 +9,7 @@ sealed interface NewsGraphRoutes : Route {
 
     @Serializable
     data object NewsList : NewsGraphRoutes
+
+    @Serializable
+    data class NewsDetails(val newsId: String) : NewsGraphRoutes
 }

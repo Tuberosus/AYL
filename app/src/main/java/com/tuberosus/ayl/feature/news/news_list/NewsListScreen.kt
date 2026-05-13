@@ -1,5 +1,7 @@
 package com.tuberosus.ayl.feature.news.news_list
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,18 +43,27 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NewsListScreenRoot(
+    onNewsClick: (String) -> Unit,
     viewModel: NewsListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     NewsListScreen(
-        state = state
+        state = state,
+        onAction = { action ->
+            when (action) {
+                is NewsListAction.OnNewsClick -> {
+                    onNewsClick(action.newsId)
+                }
+            }
+        }
     )
 }
 
 @Composable
 private fun NewsListScreen(
-    state: NewsListState
+    state: NewsListState,
+    onAction: (NewsListAction) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -73,27 +85,49 @@ private fun NewsListScreen(
                 ErrorView(state.error)
 
             state.news != null ->
-                NewsColumn(state.news)
+                NewsColumn(
+                    news = state.news,
+                    onAction = onAction,
+                )
         }
     }
 }
 
 @Composable
-private fun NewsColumn(news: List<News>) {
+private fun NewsColumn(
+    news: List<News>,
+    onAction: (NewsListAction) -> Unit
+) {
     LazyColumn {
         items(
             items = news,
             key = { it.date }
         ) { item ->
-            NewsCard(item)
+            NewsCard(
+                newsItem = item,
+                onNewsClick = {
+                    onAction(
+                        NewsListAction.OnNewsClick(it)
+                    )
+                }
+            )
             Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
 
 @Composable
-private fun NewsCard(newsItem: News) {
+private fun NewsCard(
+    newsItem: News,
+    onNewsClick: (id: String) -> Unit
+) {
     Surface(
+        modifier = Modifier
+            .clickable(
+                onClick = { onNewsClick(newsItem.id) },
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ),
         shape = RoundedCornerShape(16.dp),
         shadowElevation = 2.dp,
         tonalElevation = if (isSystemInDarkTheme()) 4.dp else 0.dp
@@ -155,31 +189,38 @@ private fun NewsCard(newsItem: News) {
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun NewsListScreenPreview() {
     AYLTheme(darkTheme = true) {
         NewsListScreen(
+            onAction = {},
             state = NewsListState(
                 isLoading = false,
                 news = listOf(
                     News(
+                        id = "1",
                         title = "Запуск нового спутника",
                         content = "Компания успешно вывела на орбиту спутник связи нового поколения. вывела на орбиту спутник связи нового поколения.",
                         imageUrl = "https://example.com/images/satellite.jpg",
-                        date = 1704067200000 // 1 января 2024 г.
+                        date = 1704067200000, // 1 января 2024 г.
+                        linkUrl = "123"
                     ),
                     News(
+                        id = "1",
                         title = "Открытие фестиваля AI",
                         content = "В Москве стартовал международный фестиваль искусственного интеллекта.",
                         imageUrl = "https://example.com/images/ai_fest.jpg",
-                        date = 1706745600000 // 1 февраля 2024 г.
+                        date = 1706745600000, // 1 февраля 2024 г.
+                        linkUrl = "123"
                     ),
                     News(
+                        id = "1",
                         title = "Новый рекорд скорости",
                         content = "Электромобиль разогнался до 500 км/ч на испытательном треке.",
                         imageUrl = "https://example.com/images/speed_record.jpg",
-                        date = 1709251200000 // 1 марта 2024 г.
+                        date = 1709251200000, // 1 марта 2024 г.
+                        linkUrl = "123"
                     )
                 )
             )
