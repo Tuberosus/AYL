@@ -29,6 +29,9 @@ class GalleryListViewModel(
 
             is GalleryListAction.OnFullScreenGalleryCloseClick ->
                 closeOpenFullPhotoGallery()
+
+            is GalleryListAction.OnRetryClick ->
+                getGalleryPhotos()
         }
     }
 
@@ -39,7 +42,8 @@ class GalleryListViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            groupedPhotos = groupGalleriesByTitle(result)
+                            groupedPhotos = groupGalleriesByTitle(result),
+                            error = null,
                         )
                     }
                 }

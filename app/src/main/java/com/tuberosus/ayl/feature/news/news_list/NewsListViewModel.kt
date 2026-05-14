@@ -20,6 +20,13 @@ class NewsListViewModel(
         getNews()
     }
 
+    fun onAction(action: NewsListAction) {
+        when (action) {
+            is NewsListAction.OnRetryClick -> getNews()
+            else -> Unit
+        }
+    }
+
     private fun getNews() {
         viewModelScope.launch {
             newsRepository.getNews()
@@ -27,7 +34,8 @@ class NewsListViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            news = result
+                            news = result,
+                            error = null,
                         )
                     }
                 }

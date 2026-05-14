@@ -34,9 +34,9 @@ import coil3.compose.AsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.util.AppError
-import com.tuberosus.ayl.ui.components.ErrorView
-import com.tuberosus.ayl.ui.components.FullScreenProgressBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.ErrorView
+import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Green
 import com.tuberosus.ayl.ui.util.ObserveAsEvents

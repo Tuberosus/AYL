@@ -35,10 +35,10 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
-import com.tuberosus.ayl.ui.components.ErrorView
-import com.tuberosus.ayl.ui.components.FullScreenProgressBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.ErrorView
 import com.tuberosus.ayl.ui.components.layouts.FullScreenImageGallery
+import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -90,7 +90,12 @@ private fun GalleryListScreen(
                 FullScreenProgressBar()
 
             state.error != null ->
-                ErrorView(state.error)
+                ErrorView(
+                    error = state.error,
+                    onRetryClick = {
+                        onAction(GalleryListAction.OnRetryClick)
+                    }
+                )
 
             state.groupedPhotos != null ->
                 ImageGrid(
@@ -128,9 +133,9 @@ private fun ImageGrid(
                     onClick(photo.id)
                 }
             }
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

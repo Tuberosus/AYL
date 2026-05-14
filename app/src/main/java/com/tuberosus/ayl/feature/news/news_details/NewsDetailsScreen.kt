@@ -43,9 +43,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.news.News
-import com.tuberosus.ayl.ui.components.ErrorView
-import com.tuberosus.ayl.ui.components.FullScreenProgressBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.ErrorView
+import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Pink
 import com.tuberosus.ayl.ui.util.ObserveAsEvents

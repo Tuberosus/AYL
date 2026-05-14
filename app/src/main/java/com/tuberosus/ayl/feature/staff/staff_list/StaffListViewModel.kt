@@ -29,6 +29,9 @@ class StaffListViewModel(
         when (action) {
             is StaffListAction.OnTgClick ->
                 sendEvent(StaffListEvent.OnTgClick(action.telegram))
+
+            is StaffListAction.OnRetryClick ->
+                getStaff()
         }
     }
 
@@ -39,7 +42,8 @@ class StaffListViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            staff = result
+                            staff = result,
+                            error = null
                         )
                     }
                 }
