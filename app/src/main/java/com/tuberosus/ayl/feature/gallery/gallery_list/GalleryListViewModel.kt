@@ -6,6 +6,7 @@ import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
 import com.tuberosus.ayl.domain.repository.GalleryRepository
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
+import com.tuberosus.ayl.ui.util.isNonNegative
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,6 +20,16 @@ class GalleryListViewModel(
 
     init {
         getGalleryPhotos()
+    }
+
+    fun onAction(action: GalleryListAction) {
+        when (action) {
+            is GalleryListAction.OnPhotoClick ->
+                openFullPhotoGallery(action.id)
+
+            is GalleryListAction.OnFullScreenGalleryCloseClick ->
+                closeOpenFullPhotoGallery()
+        }
     }
 
     private fun getGalleryPhotos() {
@@ -46,5 +57,29 @@ class GalleryListViewModel(
 
     private fun groupGalleriesByTitle(galleries: List<GalleryPhoto>): Map<String, List<GalleryPhoto>> {
         return galleries.groupBy { it.title }
+    }
+
+    private fun openFullPhotoGallery(id: String) {
+        val photos = state.value.groupedPhotos?.values?.flatten()
+        val targetIndex = photos?.indexOfFirst { it.id == id }
+
+        if (targetIndex.isNonNegative) {
+            _state.update {
+                it.copy(
+                    photos = photos?.map { photo -> photo.imageName },
+                    isFullScreenPhotoOpen = true,
+                    startIndex = targetIndex!!
+                )
+            }
+        }
+    }
+
+    private fun closeOpenFullPhotoGallery() {
+        _state.update {
+            it.copy(
+                isFullScreenPhotoOpen = false,
+                startIndex = -1
+            )
+        }
     }
 }

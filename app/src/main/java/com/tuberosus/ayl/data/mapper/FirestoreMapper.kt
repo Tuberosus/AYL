@@ -27,6 +27,7 @@ fun NewsDto.toNews() = News(
 )
 
 fun GalleryPhotoDto.toGalleryPhoto() = GalleryPhoto(
+    id = id,
     imageName = imageName,
     title = title
 )

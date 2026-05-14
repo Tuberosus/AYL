@@ -6,5 +6,8 @@ import com.tuberosus.ayl.domain.util.AppError
 data class GalleryListState(
     val isLoading: Boolean = true,
     val groupedPhotos: Map<String, List<GalleryPhoto>>? = null,
+    val photos: List<String>? = null,
     val error: AppError? = null,
+    val isFullScreenPhotoOpen: Boolean = false,
+    val startIndex: Int = 0,
 )

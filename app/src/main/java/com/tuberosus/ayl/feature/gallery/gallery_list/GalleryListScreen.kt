@@ -38,6 +38,7 @@ import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
 import com.tuberosus.ayl.ui.components.ErrorView
 import com.tuberosus.ayl.ui.components.FullScreenProgressBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.layouts.FullScreenImageGallery
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,12 +48,30 @@ fun GalleryListScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    GalleryListScreen(state)
+    GalleryListScreen(
+        state = state,
+        onAction = viewModel::onAction
+    )
+
+    if (state.isFullScreenPhotoOpen) {
+        state.photos?.let { photos ->
+            FullScreenImageGallery(
+                images = photos,
+                startIndex = state.startIndex,
+                onDismiss = {
+                    viewModel.onAction(
+                        GalleryListAction.OnFullScreenGalleryCloseClick
+                    )
+                }
+            )
+        }
+    }
 }
 
 @Composable
 private fun GalleryListScreen(
-    state: GalleryListState
+    state: GalleryListState,
+    onAction: (GalleryListAction) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -76,7 +95,11 @@ private fun GalleryListScreen(
             state.groupedPhotos != null ->
                 ImageGrid(
                     groupedPhotos = state.groupedPhotos,
-                    onClick = {}
+                    onClick = {
+                        onAction(
+                            GalleryListAction.OnPhotoClick(it)
+                        )
+                    }
                 )
         }
     }
@@ -85,7 +108,7 @@ private fun GalleryListScreen(
 @Composable
 private fun ImageGrid(
     groupedPhotos: Map<String, List<GalleryPhoto>>,
-    onClick: (String) -> Unit = {}
+    onClick: (String) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -100,8 +123,13 @@ private fun ImageGrid(
             ) {
                 SectionTitle(title)
             }
-            items(items = photos) { photo ->
-                GridPhoto(photo.imageName) { }
+            items(photos) { photo ->
+                GridPhoto(photo.imageName) {
+                    onClick(photo.id)
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }
@@ -154,7 +182,8 @@ fun GridPhoto(
 private fun GalleryListScreenPreview() {
     AYLTheme {
         GalleryListScreen(
-            state = GalleryListState()
+            state = GalleryListState(),
+            onAction = {}
         )
     }
 }

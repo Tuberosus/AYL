@@ -12,9 +12,20 @@ import com.tuberosus.ayl.domain.util.map
 class GalleryRepositoryImpl(
     private val firestoreRemoteDataSource: FirestoreRemoteDataSource
 ) : GalleryRepository {
+    private var cachedGallery: List<GalleryPhoto>? = null
+
     override suspend fun getGalleryPhotos(): Result<List<GalleryPhoto>> {
+        cachedGallery?.let {
+            return Result.Success(it)
+        }
+
         return firestoreRemoteDataSource.getCollection<GalleryPhotoDto>(GALLERY_COLLECTION)
-            .map { list -> list.map { it.toGalleryPhoto() } }
+            .map { galleryPhotoDtos ->
+                val galleryPhoto = galleryPhotoDtos
+                    .map { it.toGalleryPhoto() }
+                cachedGallery = galleryPhoto
+                galleryPhoto
+            }
     }
 
     companion object {

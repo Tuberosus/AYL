@@ -6,4 +6,5 @@
     <string name="nav_title_staff">Штат</string>
     <string name="nav_title_contacts">Контакты</string>
     <string name="back">Назад</string>
+    <string name="close">Закрыть</string>
 </resources>
