@@ -40,9 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.news.News
+import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.components.layouts.ErrorView
 import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
@@ -153,14 +154,18 @@ private fun NewsDetailsContent(
             .fillMaxSize()
             .verticalScroll(scrollState),
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             modifier = Modifier
                 .fillMaxWidth(),
             model = news.imageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            placeholder = painterResource(R.drawable.ayl_logo_placeholder),
-            error = painterResource(R.drawable.ayl_logo_placeholder),
+            loading = {
+                PlaceholderImage()
+            },
+            error = {
+                PlaceholderImage()
+            }
         )
         Spacer(modifier = Modifier.height(24.dp))
         Column(

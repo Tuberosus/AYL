@@ -61,6 +61,7 @@ class GalleryListViewModel(
 
     private fun groupGalleriesByTitle(galleries: List<GalleryPhoto>): Map<String, List<GalleryPhoto>> {
         return galleries.groupBy { it.title }
+            .toSortedMap()
     }
 
     private fun openFullPhotoGallery(id: String) {

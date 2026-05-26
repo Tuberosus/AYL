@@ -30,10 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.util.AppError
+import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.components.layouts.ErrorView
 import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
@@ -132,7 +133,7 @@ private fun StaffItem(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
@@ -144,8 +145,12 @@ private fun StaffItem(
             model = staffItem.photoName,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            placeholder = painterResource(R.drawable.ayl_logo_placeholder),
-            error = painterResource(R.drawable.ayl_logo_placeholder),
+            loading = {
+                PlaceholderImage()
+            },
+            error = {
+                PlaceholderImage()
+            }
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column {
@@ -184,6 +189,23 @@ private fun StaffItem(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StaffItemPreview() {
+    AYLTheme {
+        StaffItem(
+            staffItem = Staff(
+                name = "Иван Иванов",
+                position = "Старший разработчик",
+                bio = "Опыт 10 лет, эксперт в Compose",
+                photoName = "ivan.jpg",
+                telegramLink = "https://t.me/ivan"
+            ),
+            onTgClick = {}
+        )
     }
 }
 

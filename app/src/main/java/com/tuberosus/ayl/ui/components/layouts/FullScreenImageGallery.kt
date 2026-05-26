@@ -36,8 +36,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
+import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.theme.Blue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -164,15 +165,19 @@ private fun FullScreenImage(
     imageUrl: String,
     offsetY: Float,
 ) {
-    AsyncImage(
+    SubcomposeAsyncImage(
         modifier = Modifier
             .fillMaxSize()
             .graphicsLayer { translationY = offsetY },
         model = imageUrl,
         contentDescription = null,
         contentScale = ContentScale.Fit,
-        placeholder = painterResource(R.drawable.ayl_logo_placeholder),
-        error = painterResource(R.drawable.ayl_logo_placeholder),
+        loading = {
+            PlaceholderImage()
+        },
+        error = {
+            PlaceholderImage()
+        }
     )
 }
 

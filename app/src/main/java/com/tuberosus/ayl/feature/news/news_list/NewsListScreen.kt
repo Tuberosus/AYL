@@ -30,9 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.news.News
+import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.components.layouts.ErrorView
 import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
@@ -55,6 +56,7 @@ fun NewsListScreenRoot(
                 is NewsListAction.OnNewsClick -> {
                     onNewsClick(action.newsId)
                 }
+
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -138,7 +140,7 @@ private fun NewsCard(
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 modifier = Modifier
                     .height(200.dp)
                     .fillMaxWidth()
@@ -146,8 +148,12 @@ private fun NewsCard(
                 model = newsItem.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.ayl_logo_placeholder),
-                error = painterResource(R.drawable.ayl_logo_placeholder),
+                loading = {
+                    PlaceholderImage()
+                },
+                error = {
+                    PlaceholderImage()
+                }
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
