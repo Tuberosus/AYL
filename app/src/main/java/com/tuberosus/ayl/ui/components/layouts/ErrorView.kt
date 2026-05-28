@@ -33,6 +33,9 @@ fun ErrorView(
             Log.e("AppError", "error: ${error.message}")
             "Что-то пошло не так"
         }
+
+        AppError.InvalidCredentials -> "Неверный логин или пароль"
+        AppError.Unauthorized -> "Требуется авторизация"
     }
     Box(
         Modifier.fillMaxSize(),

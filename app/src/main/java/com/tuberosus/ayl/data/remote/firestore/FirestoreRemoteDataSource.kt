@@ -34,7 +34,7 @@ class FirestoreRemoteDataSource(
 
             Result.Success(data)
 
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Result.Failure(e.toAppError())
         }
     }
