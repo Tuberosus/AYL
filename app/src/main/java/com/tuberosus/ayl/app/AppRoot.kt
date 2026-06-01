@@ -7,10 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.tuberosus.ayl.navigation.AppBottomBar
 import com.tuberosus.ayl.navigation.AppNavGraph
-import com.tuberosus.ayl.ui.components.BackTopAppBar
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AppRoot() {
+fun AppRoot(
+    authViewModel: AuthViewModel = koinViewModel()
+) {
     val navController = rememberNavController()
 
     Scaffold(

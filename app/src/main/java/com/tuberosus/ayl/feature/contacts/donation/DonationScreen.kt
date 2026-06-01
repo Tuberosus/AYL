@@ -7,8 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tuberosus.ayl.ui.components.AylWebView
-import com.tuberosus.ayl.ui.components.BackTopAppBar
-import com.tuberosus.ayl.ui.util.ObserveAsEvents
+import com.tuberosus.ayl.ui.components.topbars.BackTopAppBar
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

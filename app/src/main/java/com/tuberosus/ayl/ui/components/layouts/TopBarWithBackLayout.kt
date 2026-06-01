@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tuberosus.ayl.ui.components.BackTopAppBar
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
+import com.tuberosus.ayl.ui.components.topbars.BackTopAppBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 
 @Composable

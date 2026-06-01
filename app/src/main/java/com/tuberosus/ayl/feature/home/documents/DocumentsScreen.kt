@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tuberosus.ayl.ui.components.AylWebView
-import com.tuberosus.ayl.ui.components.BackTopAppBar
+import com.tuberosus.ayl.ui.components.topbars.BackTopAppBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import org.koin.androidx.compose.koinViewModel
 

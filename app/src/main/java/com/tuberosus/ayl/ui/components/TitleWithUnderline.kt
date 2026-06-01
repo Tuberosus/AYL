@@ -2,6 +2,7 @@ package com.tuberosus.ayl.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -17,20 +18,22 @@ import com.tuberosus.ayl.ui.theme.Pink
 fun TitleWithUnderline(
     text: String
 ) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.headlineMedium,
-        color = MaterialTheme.colorScheme.onBackground,
-        fontWeight = FontWeight.Bold
-    )
+    Column {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontWeight = FontWeight.Bold
+        )
 
-    Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-    Box(
-        modifier = Modifier
-            .width(80.dp)
-            .height(4.dp)
-            .background(Pink)
-    )
-    Spacer(modifier = Modifier.height(16.dp))
+        Box(
+            modifier = Modifier
+                .width(80.dp)
+                .height(4.dp)
+                .background(Pink)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+    }
 }
