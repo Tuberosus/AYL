@@ -63,6 +63,50 @@ class FirestoreRemoteDataSource(
             Result.Failure(e.toAppError())
         }
     }
+
+    suspend fun <T : FirestoreDocument> saveDocument(
+        collection: String,
+        data: T
+    ): Result<String> {
+        return try {
+            if (data.id.isBlank()) {
+                val document = firestore
+                    .collection(collection)
+                    .add(data)
+                    .await()
+
+                Result.Success(document.id)
+            } else {
+                firestore
+                    .collection(collection)
+                    .document(data.id)
+                    .set(data)
+                    .await()
+
+                Result.Success(data.id)
+            }
+        } catch (e: Exception) {
+            Result.Failure(e.toAppError())
+        }
+    }
+
+    suspend fun deleteDocument(
+        collection: String,
+        documentId: String
+    ): Result<Unit> {
+        return try {
+            firestore
+                .collection(collection)
+                .document(documentId)
+                .delete()
+                .await()
+
+            Result.Success(Unit)
+
+        } catch (e: Exception) {
+            Result.Failure(e.toAppError())
+        }
+    }
 }
 
 suspend inline fun <reified T> FirestoreRemoteDataSource.getCollection(

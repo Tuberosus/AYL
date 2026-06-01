@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.data.repository
 
 import com.tuberosus.ayl.data.mapper.toGalleryPhoto
+import com.tuberosus.ayl.data.mapper.toGalleryPhotoDto
 import com.tuberosus.ayl.data.remote.firestore.FirestoreRemoteDataSource
 import com.tuberosus.ayl.data.remote.firestore.dto.GalleryPhotoDto
 import com.tuberosus.ayl.data.remote.firestore.getCollection
@@ -26,6 +27,20 @@ class GalleryRepositoryImpl(
                 cachedGallery = galleryPhoto
                 galleryPhoto
             }
+    }
+
+    override suspend fun savePhotoToGallery(galleryPhoto: GalleryPhoto): Result<String> {
+        return firestoreRemoteDataSource.saveDocument(
+            collection = GALLERY_COLLECTION,
+            data = galleryPhoto.toGalleryPhotoDto()
+        )
+    }
+
+    override suspend fun deletePhotoToGallery(galleryPhotoId: String): Result<Unit> {
+        return firestoreRemoteDataSource.deleteDocument(
+            collection = GALLERY_COLLECTION,
+            documentId = galleryPhotoId
+        )
     }
 
     companion object {

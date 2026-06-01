@@ -29,3 +29,9 @@ fun GalleryPhotoDto.toGalleryPhoto() = GalleryPhoto(
     imageName = imageName,
     title = title
 )
+
+fun GalleryPhoto.toGalleryPhotoDto() = GalleryPhotoDto(
+    id = id,
+    imageName = imageName,
+    title = title,
+)
