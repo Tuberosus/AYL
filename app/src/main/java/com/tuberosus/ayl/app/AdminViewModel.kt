@@ -10,7 +10,7 @@ import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
 import kotlinx.coroutines.launch
 
-class AuthViewModel(
+class AdminViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
