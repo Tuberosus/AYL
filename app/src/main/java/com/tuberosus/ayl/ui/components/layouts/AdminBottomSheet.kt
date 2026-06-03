@@ -1,8 +1,8 @@
 package com.tuberosus.ayl.ui.components.layouts
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -17,6 +17,8 @@ fun AdminBottomSheet(
     content: (@Composable () -> Unit)?
 ) {
     ModalBottomSheet(
+        modifier = Modifier
+            .safeDrawingPadding(),
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         dragHandle = { BottomSheetDefaults.DragHandle() },
@@ -24,7 +26,6 @@ fun AdminBottomSheet(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.95f)
         ) {
             content?.invoke()
         }

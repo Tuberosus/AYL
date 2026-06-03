@@ -72,7 +72,8 @@ fun AppRoot(
             }
         ) {
             when (showDialog) {
-                BottomSheetType.GALLERY -> GalleryAdminRoot()
+                BottomSheetType.GALLERY ->
+                    GalleryAdminRoot(onDismiss = { showDialog = null })
                 BottomSheetType.NEWS -> NewsAdminBottomSheet()
                 BottomSheetType.STAFF -> StaffAdminBottomSheet()
                 else -> null

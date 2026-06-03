@@ -29,10 +29,10 @@ class GalleryRepositoryImpl(
             }
     }
 
-    override suspend fun savePhotoToGallery(galleryPhoto: GalleryPhoto): Result<String> {
-        return firestoreRemoteDataSource.saveDocument(
+    override suspend fun savePhotosToGallery(galleryPhotos: List<GalleryPhoto>): Result<Unit> {
+        return firestoreRemoteDataSource.saveDocuments(
             collection = GALLERY_COLLECTION,
-            data = galleryPhoto.toGalleryPhotoDto()
+            data = galleryPhotos.map { it.toGalleryPhotoDto() }
         )
     }
 

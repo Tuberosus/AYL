@@ -58,7 +58,6 @@ class FirestoreRemoteDataSource(
             } else {
                 Result.Failure(AppError.NotFound)
             }
-
         } catch (e: Exception) {
             Result.Failure(e.toAppError())
         }
@@ -85,6 +84,30 @@ class FirestoreRemoteDataSource(
 
                 Result.Success(data.id)
             }
+        } catch (e: Exception) {
+            Result.Failure(e.toAppError())
+        }
+    }
+
+    suspend fun <T : FirestoreDocument> saveDocuments(
+        collection: String,
+        data: List<T>
+    ): Result<Unit> {
+        return try {
+            val batch = firestore.batch()
+
+            data.forEach { item ->
+                val document = if (item.id.isBlank()) {
+                    firestore.collection(collection).document()
+                } else {
+                    firestore.collection(collection).document(item.id)
+                }
+                batch.set(document, item)
+            }
+            batch.commit().await()
+
+            Result.Success(Unit)
+
         } catch (e: Exception) {
             Result.Failure(e.toAppError())
         }
