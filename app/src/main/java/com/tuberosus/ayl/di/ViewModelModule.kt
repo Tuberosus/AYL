@@ -1,9 +1,10 @@
 package com.tuberosus.ayl.di
 
-import com.tuberosus.ayl.app.AdminViewModel
+import com.tuberosus.ayl.app.AuthViewModel
 import com.tuberosus.ayl.feature.contacts.contacts_head.ContactsHeadViewModel
 import com.tuberosus.ayl.feature.contacts.contacts_region.ContactsRegionViewModel
 import com.tuberosus.ayl.feature.contacts.donation.DonationViewModel
+import com.tuberosus.ayl.feature.gallery.gallery_admin.GalleryAdminViewModel
 import com.tuberosus.ayl.feature.gallery.gallery_list.GalleryListViewModel
 import com.tuberosus.ayl.feature.home.documents.DocumentsViewModel
 import com.tuberosus.ayl.feature.news.news_details.NewsDetailsViewModel
@@ -24,5 +25,7 @@ val viewModelModule = module {
     viewModelOf(::ContactsRegionViewModel)
     viewModelOf(::DonationViewModel)
 
-    viewModelOf(::AdminViewModel)
+    viewModelOf(::AuthViewModel)
+
+    viewModelOf(::GalleryAdminViewModel)
 }

@@ -58,39 +58,4 @@ fun AdminTopBar(
             }
         }
     )
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(
-//                vertical = 8.dp,
-//                horizontal = 16.dp
-//            ),
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        Button(
-//            elevation = ButtonDefaults.elevatedButtonElevation(),
-//            onClick = onExitClick,
-//            colors = ButtonDefaults.buttonColors(
-//                contentColor = Blue,
-//                containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
-//            )
-//        ) {
-//            Text(
-//                text = "Выход",
-//                style = MaterialTheme.typography.titleMedium,
-//            )
-//        }
-//        IconButton(
-//            onClick = onAddClick
-//        ) {
-//            Icon(
-//                modifier = Modifier
-//                    .size(36.dp),
-//                painter = painterResource(R.drawable.ic_add_circle),
-//                contentDescription = null,
-//                tint = Blue
-//            )
-//        }
-//    }
 }

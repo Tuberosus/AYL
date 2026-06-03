@@ -2,6 +2,7 @@ package com.tuberosus.ayl.app
 
 import android.app.Application
 import com.tuberosus.ayl.di.dataModule
+import com.tuberosus.ayl.di.useCaseModule
 import com.tuberosus.ayl.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -14,7 +15,7 @@ class AylApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@AylApplication)
-            modules(dataModule, viewModelModule)
+            modules(dataModule, useCaseModule, viewModelModule)
         }
     }
 }
