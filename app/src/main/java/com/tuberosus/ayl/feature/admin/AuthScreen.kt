@@ -1,4 +1,15 @@
 package com.tuberosus.ayl.feature.admin
 
-class AuthScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun AuthScreenRoot(
+    viewModel: AuthViewModel
+) {
+
+}
+
+@Composable
+private fun AuthScreen() {
+
 }

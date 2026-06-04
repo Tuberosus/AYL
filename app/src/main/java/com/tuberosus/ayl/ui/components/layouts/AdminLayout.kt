@@ -24,11 +24,12 @@ import com.tuberosus.ayl.ui.theme.AYLTheme
 
 @Composable
 fun AdminLayout(
-    canSave: Boolean,
-    isSaving: Boolean,
-    onSave: () -> Unit,
+    canAction: Boolean,
+    isAction: Boolean,
+    onAction: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    actionTitle: String = "Сохранить",
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -42,9 +43,10 @@ fun AdminLayout(
         content()
         Spacer(Modifier.height(24.dp))
         RowButtons(
-            canSave = canSave,
-            isSaving = isSaving,
-            onSave = onSave,
+            canAction = canAction,
+            isAction = isAction,
+            onAction = onAction,
+            actionTitle = actionTitle,
             onDismiss = onDismiss,
         )
         Spacer(Modifier.height(12.dp))
@@ -53,9 +55,10 @@ fun AdminLayout(
 
 @Composable
 private fun RowButtons(
-    canSave: Boolean,
-    isSaving: Boolean,
-    onSave: () -> Unit,
+    canAction: Boolean,
+    isAction: Boolean,
+    actionTitle: String,
+    onAction: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     Row(
@@ -71,17 +74,17 @@ private fun RowButtons(
         }
 
         Button(
-            onClick = onSave,
-            enabled = canSave,
+            onClick = onAction,
+            enabled = canAction,
             modifier = Modifier.weight(1f)
         ) {
-            if (isSaving) {
+            if (isAction) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
                     strokeWidth = 2.dp
                 )
             } else {
-                Text("Сохранить")
+                Text(actionTitle)
             }
         }
     }
@@ -92,9 +95,9 @@ private fun RowButtons(
 private fun AdminLayoutPreview() {
     AYLTheme {
         AdminLayout(
-            canSave = false,
-            isSaving = false,
-            onSave = {},
+            canAction = false,
+            isAction = false,
+            onAction = {},
             onDismiss = {},
         ) {}
     }

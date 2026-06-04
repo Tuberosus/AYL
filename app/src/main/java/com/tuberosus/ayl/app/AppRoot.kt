@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tuberosus.ayl.feature.admin.AuthScreenRoot
 import com.tuberosus.ayl.feature.admin.AuthViewModel
 import com.tuberosus.ayl.feature.admin.NewsAdminBottomSheet
 import com.tuberosus.ayl.feature.admin.StaffAdminBottomSheet
@@ -63,7 +64,7 @@ fun AppRoot(
         AppNavGraph(
             navHostController = navController,
             onLoginClick = {
-                // TODO()
+                showDialog = BottomSheetType.AUTH
             },
             modifier = Modifier.padding(paddingValues)
         )
@@ -80,7 +81,8 @@ fun AppRoot(
                     GalleryAdminRoot(onDismiss = { showDialog = null })
                 BottomSheetType.NEWS -> NewsAdminBottomSheet()
                 BottomSheetType.STAFF -> StaffAdminBottomSheet()
-                else -> null
+                BottomSheetType.AUTH -> AuthScreenRoot(authViewModel)
+                else -> Unit
             }
         }
     }
@@ -107,7 +109,8 @@ private fun currentAdminScreen(route: String?): AdminScreen? {
 enum class BottomSheetType {
     GALLERY,
     NEWS,
-    STAFF
+    STAFF,
+    AUTH,
 }
 
 enum class AdminScreen {

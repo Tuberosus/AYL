@@ -82,9 +82,9 @@ private fun GalleryAdminScreen(
     onDismiss: () -> Unit,
 ) {
     AdminLayout(
-        canSave = canSave,
-        isSaving = isSaving,
-        onSave = onSave,
+        canAction = canSave,
+        isAction = isSaving,
+        onAction = onSave,
         onDismiss = onDismiss
     ) {
         Text(
