@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.app
+package com.tuberosus.ayl.feature.admin
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

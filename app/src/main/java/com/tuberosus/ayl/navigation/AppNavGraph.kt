@@ -14,6 +14,7 @@ import com.tuberosus.ayl.feature.staff.navigation.staffGraph
 @Composable
 fun AppNavGraph(
     navHostController: NavHostController,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -21,7 +22,10 @@ fun AppNavGraph(
         startDestination = HomeGraphRoutes.Graph,
         modifier = modifier
     ) {
-        homeGraph(navHostController)
+        homeGraph(
+            navController = navHostController,
+            onLoginClick = onLoginClick,
+        )
         galleryGraph()
         newsGraph(navHostController)
         staffGraph()

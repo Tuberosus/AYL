@@ -1,6 +1,6 @@
 package com.tuberosus.ayl.di
 
-import com.tuberosus.ayl.app.AuthViewModel
+import com.tuberosus.ayl.feature.admin.AuthViewModel
 import com.tuberosus.ayl.feature.contacts.contacts_head.ContactsHeadViewModel
 import com.tuberosus.ayl.feature.contacts.contacts_region.ContactsRegionViewModel
 import com.tuberosus.ayl.feature.contacts.donation.DonationViewModel

@@ -9,7 +9,8 @@ import com.tuberosus.ayl.feature.home.advantages.AdvantagesScreenRoot
 import com.tuberosus.ayl.feature.home.documents.DocumentsScreenRoot
 
 fun NavGraphBuilder.homeGraph(
-    navController: NavController
+    navController: NavController,
+    onLoginClick: () -> Unit,
 ) {
     navigation<HomeGraphRoutes.Graph>(
         startDestination = HomeGraphRoutes.About
@@ -21,7 +22,8 @@ fun NavGraphBuilder.homeGraph(
                 },
                 onDocumentsClick = {
                     navController.navigate(HomeGraphRoutes.Documents)
-                }
+                },
+                onLoginClick = onLoginClick,
             )
         }
         composable<HomeGraphRoutes.Advantages> {

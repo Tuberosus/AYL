@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tuberosus.ayl.feature.admin.AuthViewModel
 import com.tuberosus.ayl.feature.admin.NewsAdminBottomSheet
 import com.tuberosus.ayl.feature.admin.StaffAdminBottomSheet
 import com.tuberosus.ayl.feature.gallery.gallery_admin.GalleryAdminRoot
@@ -61,6 +62,9 @@ fun AppRoot(
     ) { paddingValues ->
         AppNavGraph(
             navHostController = navController,
+            onLoginClick = {
+                // TODO()
+            },
             modifier = Modifier.padding(paddingValues)
         )
     }

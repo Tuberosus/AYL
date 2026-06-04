@@ -25,10 +25,12 @@ import com.tuberosus.ayl.ui.util.withNoBreakShortWords
 fun AboutScreenRoot(
     onAdvantagesClick: () -> Unit,
     onDocumentsClick: () -> Unit,
+    onLoginClick: () -> Unit,
 ) {
     AboutScreen(
         onAdvantagesClick = onAdvantagesClick,
-        onDocumentsClick = onDocumentsClick
+        onDocumentsClick = onDocumentsClick,
+        onLoginClick = onLoginClick,
     )
 }
 
@@ -36,9 +38,12 @@ fun AboutScreenRoot(
 private fun AboutScreen(
     onAdvantagesClick: () -> Unit,
     onDocumentsClick: () -> Unit,
+    onLoginClick: () -> Unit,
 ) {
     LogoLayout(
-        title = "О нас"
+        title = "О нас",
+        isLoginEnabled = true,
+        onLoginClick = onLoginClick,
     ) {
         AboutContent()
         Spacer(modifier = Modifier.height(16.dp))
@@ -148,7 +153,8 @@ private fun AboutScreenPreview() {
     AYLTheme {
         AboutScreen(
             onAdvantagesClick = {},
-            onDocumentsClick = {}
+            onDocumentsClick = {},
+            onLoginClick = {}
         )
     }
 }

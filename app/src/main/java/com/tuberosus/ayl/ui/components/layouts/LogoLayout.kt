@@ -19,6 +19,8 @@ import com.tuberosus.ayl.ui.theme.AYLTheme
 fun LogoLayout(
     modifier: Modifier = Modifier,
     title: String,
+    onLoginClick: () -> Unit = {},
+    isLoginEnabled: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
@@ -27,7 +29,10 @@ fun LogoLayout(
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
     ) {
-        AylLogo()
+        AylLogo(
+            onLoginClick = onLoginClick,
+            isLoginEnabled = isLoginEnabled,
+        )
         TitleWithUnderline(title)
         content()
     }
