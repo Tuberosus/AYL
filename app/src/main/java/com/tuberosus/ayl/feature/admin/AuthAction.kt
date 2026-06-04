@@ -6,4 +6,5 @@ sealed interface AuthAction {
     data object OnPasswordVisibleClick : AuthAction
     data object OnLogInClick : AuthAction
     data object OnSingOut : AuthAction
+    data object ClearInput : AuthAction
 }

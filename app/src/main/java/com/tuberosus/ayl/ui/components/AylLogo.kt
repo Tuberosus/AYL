@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tuberosus.ayl.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun ColumnScope.AylLogo(
@@ -29,7 +30,10 @@ fun ColumnScope.AylLogo(
     LaunchedEffect(clickCount) {
         if (clickCount > 4 && isLoginEnabled) {
             onLoginClick()
+            clickCount = 0
         }
+        delay(4000)
+        clickCount = 0
     }
 
     Image(

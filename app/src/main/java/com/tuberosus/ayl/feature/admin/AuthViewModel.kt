@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tuberosus.ayl.domain.repository.AuthRepository
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,6 +39,9 @@ class AuthViewModel(
             AuthState()
         )
 
+    private val eventChannel = Channel<AuthEvent>()
+    val events = eventChannel.receiveAsFlow()
+
     init {
         setLoggedInState(
             authRepository.getCurrentUser() != null
@@ -45,11 +50,12 @@ class AuthViewModel(
 
     fun onAction(action: AuthAction) {
         when (action) {
-            is AuthAction.OnEmailChange -> changeEmail(action.value)
-            is AuthAction.OnPasswordChange -> changePassword(action.value)
+            is AuthAction.OnEmailChange -> onChangeEmail(action.value)
+            is AuthAction.OnPasswordChange -> onChangePassword(action.value)
             AuthAction.OnPasswordVisibleClick -> changePasswordVisible()
             AuthAction.OnLogInClick -> signIn()
             AuthAction.OnSingOut -> signOut()
+            AuthAction.ClearInput -> clearInput()
         }
     }
 
@@ -90,9 +96,19 @@ class AuthViewModel(
             )
                 .onSuccess {
                     setLoggedInState(true)
+                    eventChannel.send(
+                        AuthEvent.InfoMessage("Вход выполнен")
+                    )
+                    eventChannel.send(
+                        AuthEvent.ExitForm
+                    )
+                    clearInput()
                 }
                 .onFailure {
                     setLoggedInState(false)
+                    eventChannel.send(
+                        AuthEvent.InfoMessage("Не удалось войти")
+                    )
                 }
 
             _state.update {
@@ -101,7 +117,7 @@ class AuthViewModel(
         }
     }
 
-    private fun changeEmail(value: String) {
+    private fun onChangeEmail(value: String) {
         val preparedEmail = value
             .trim()
             .lowercase()
@@ -113,7 +129,7 @@ class AuthViewModel(
         }
     }
 
-    private fun changePassword(value: String) {
+    private fun onChangePassword(value: String) {
         _state.update {
             it.copy(
                 password = value
@@ -132,6 +148,16 @@ class AuthViewModel(
     private fun setLoggedInState(value: Boolean) {
         _state.update {
             it.copy(isLoggedIn = value)
+        }
+    }
+
+    private fun clearInput() {
+        _state.update {
+            it.copy(
+                email = "",
+                password = "",
+                isPasswordVisible = false
+            )
         }
     }
 }

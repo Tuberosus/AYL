@@ -6,12 +6,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tuberosus.ayl.feature.admin.AuthAction
 import com.tuberosus.ayl.feature.admin.AuthScreenRoot
 import com.tuberosus.ayl.feature.admin.AuthViewModel
 import com.tuberosus.ayl.feature.admin.NewsAdminBottomSheet
@@ -34,11 +36,13 @@ fun AppRoot(
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
+    val authState by authViewModel.state.collectAsStateWithLifecycle()
+
     val showAdminTopBar =
-//        adminViewModel.isLoggedIn &&
+        authState.isLoggedIn &&
         isRouteRequiringAdmin(currentDestination)
 
-    var showDialog by remember { mutableStateOf<BottomSheetType?>(null) }
+    var showDialog by rememberSaveable { mutableStateOf<BottomSheetType?>(null) }
 
 
     Scaffold(
@@ -73,15 +77,25 @@ fun AppRoot(
     if (showDialog != null) {
         AdminBottomSheet(
             onDismiss = {
+                authViewModel.onAction(AuthAction.ClearInput)
                 showDialog = null
             }
         ) {
             when (showDialog) {
                 BottomSheetType.GALLERY ->
                     GalleryAdminRoot(onDismiss = { showDialog = null })
+
                 BottomSheetType.NEWS -> NewsAdminBottomSheet()
                 BottomSheetType.STAFF -> StaffAdminBottomSheet()
-                BottomSheetType.AUTH -> AuthScreenRoot(authViewModel)
+                BottomSheetType.AUTH ->
+                    AuthScreenRoot(
+                        viewModel = authViewModel,
+                        onDismiss = {
+                            authViewModel.onAction(AuthAction.ClearInput)
+                            showDialog = null
+                        }
+                    )
+
                 else -> Unit
             }
         }
