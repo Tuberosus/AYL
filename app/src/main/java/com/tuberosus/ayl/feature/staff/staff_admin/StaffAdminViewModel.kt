@@ -1,9 +1,9 @@
-package com.tuberosus.ayl.feature.news.news_admin
+package com.tuberosus.ayl.feature.staff.staff_admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tuberosus.ayl.domain.model.news.News
-import com.tuberosus.ayl.domain.usecase.SaveNewsUseCase
+import com.tuberosus.ayl.domain.model.staff.Staff
+import com.tuberosus.ayl.domain.usecase.SaveStaffUseCase
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
 import kotlinx.coroutines.channels.Channel
@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NewsAdminViewModel(
-    private val saveNewsUseCase: SaveNewsUseCase
+class StaffAdminViewModel(
+    private val saveStaffUseCase: SaveStaffUseCase
 ) : ViewModel() {
 
     private var hasLoadedInitialData = false
 
-    private val _state = MutableStateFlow(NewsAdminState())
+    private val _state = MutableStateFlow(StaffAdminState())
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
@@ -36,28 +36,29 @@ class NewsAdminViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = NewsAdminState()
+            initialValue = StaffAdminState()
         )
 
-    private val eventChannel = Channel<NewsAdminEvent>()
+    private val eventChannel = Channel<StaffAdminEvent>()
     val events = eventChannel.receiveAsFlow()
 
-    fun onAction(action: NewsAdminAction) {
+    fun onAction(action: StaffAdminAction) {
         when (action) {
-            is NewsAdminAction.OnNewsTextChange -> onNewsTextChange(action.value)
-            is NewsAdminAction.OnPhotoUrlChange -> onPhotoUrlChange(action.value)
-            is NewsAdminAction.OnSourceUrlChange -> onSourceUrlChange(action.value)
-            is NewsAdminAction.OnTitleChange -> onTitleChange(action.value)
-            NewsAdminAction.OnSave -> saveNews()
-            NewsAdminAction.OnDismiss -> clearState()
+            is StaffAdminAction.OnNameChange -> onNameChange(action.value)
+            is StaffAdminAction.OnPositionChange -> onPositionChange(action.value)
+            is StaffAdminAction.OnPhotoUrlChange -> onPhotoChange(action.value)
+            is StaffAdminAction.OnTelegramLinkChange -> onTelegramLinkChange(action.value)
+            is StaffAdminAction.OnBioChange -> onBioChange(action.value)
+            StaffAdminAction.OnSave -> saveStaff()
+            StaffAdminAction.OnDismiss -> clearState()
         }
     }
 
     private fun observeValidationStates() {
         _state
             .map {
-                it.title.isNotBlank()
-                        && it.newsText.isNotBlank()
+                it.name.isNotBlank()
+                        && it.position.isNotBlank()
                         && !it.isSaving
             }
             .distinctUntilChanged()
@@ -67,7 +68,7 @@ class NewsAdminViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun saveNews() {
+    fun saveStaff() {
         val state = _state.value
 
         if (!state.canSave) return
@@ -76,28 +77,25 @@ class NewsAdminViewModel(
             _state.update {
                 it.copy(isSaving = true)
             }
-
-            val news = News(
-                id = "",
-                title = state.title,
-                content = state.newsText,
-                imageUrl = state.photoUrl,
-                linkUrl = state.sourceUrl,
-                date = System.currentTimeMillis()
+            val staff = Staff(
+                name = state.name,
+                position = state.position,
+                photoName = state.photoUrl,
+                telegramLink = state.telegramLink,
+                bio = state.bio
             )
 
-            saveNewsUseCase(news)
+            saveStaffUseCase(staff)
                 .onSuccess {
-                    _state.update { NewsAdminState() }
-                    eventChannel.send(NewsAdminEvent.SuccessSave)
+                    clearState()
+                    eventChannel.send(StaffAdminEvent.SuccessSave)
                 }
                 .onFailure {
                     _state.update {
                         it.copy(isSaving = false)
                     }
-
                     eventChannel.send(
-                        NewsAdminEvent.SaveErrorMessage(
+                        StaffAdminEvent.SaveErrorMessage(
                             "Ошибка при сохранении. Попробуйте позже."
                         )
                     )
@@ -105,31 +103,37 @@ class NewsAdminViewModel(
         }
     }
 
-    private fun onTitleChange(value: String) {
+    private fun onNameChange(value: String) {
         _state.update {
-            it.copy(title = value)
+            it.copy(name = value)
         }
     }
 
-    private fun onPhotoUrlChange(value: String) {
+    private fun onPositionChange(value: String) {
+        _state.update {
+            it.copy(position = value)
+        }
+    }
+
+    private fun onPhotoChange(value: String) {
         _state.update {
             it.copy(photoUrl = value)
         }
     }
 
-    private fun onSourceUrlChange(value: String) {
+    private fun onTelegramLinkChange(value: String) {
         _state.update {
-            it.copy(sourceUrl = value)
+            it.copy(telegramLink = value)
         }
     }
 
-    private fun onNewsTextChange(value: String) {
+    private fun onBioChange(value: String) {
         _state.update {
-            it.copy(newsText = value)
+            it.copy(bio = value)
         }
     }
 
     private fun clearState() {
-        _state.update { NewsAdminState() }
+        _state.update { StaffAdminState() }
     }
 }

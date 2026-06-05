@@ -10,11 +10,21 @@ import com.tuberosus.ayl.domain.model.staff.Staff
 import java.util.Date
 
 fun StaffDto.toStaff() = Staff(
+    id = id,
     name = name,
     position = position,
     bio = bio,
     photoName = photoName,
     telegramLink = telegramLink
+)
+
+fun Staff.toStaffDto() = StaffDto(
+    id = id,
+    name = name,
+    position = position,
+    photoName = photoName,
+    telegramLink = telegramLink,
+    bio = bio
 )
 
 fun NewsDto.toNews() = News(

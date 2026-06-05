@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.data.repository
 
 import com.tuberosus.ayl.data.mapper.toStaff
+import com.tuberosus.ayl.data.mapper.toStaffDto
 import com.tuberosus.ayl.data.remote.firestore.FirestoreRemoteDataSource
 import com.tuberosus.ayl.data.remote.firestore.dto.StaffDto
 import com.tuberosus.ayl.data.remote.firestore.getCollection
@@ -16,6 +17,13 @@ class StaffRepositoryImpl(
         return firestoreRemoteDataSource
             .getCollection<StaffDto>(STAFF_COLLECTION)
             .map { list -> list.map { it.toStaff() } }
+    }
+
+    override suspend fun saveStaff(staff: Staff): Result<Unit> {
+        return firestoreRemoteDataSource.saveDocument(
+            collection = STAFF_COLLECTION,
+            data = staff.toStaffDto()
+        )
     }
 
     companion object {

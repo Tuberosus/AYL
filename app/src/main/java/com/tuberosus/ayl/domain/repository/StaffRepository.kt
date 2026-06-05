@@ -5,4 +5,5 @@ import com.tuberosus.ayl.domain.util.Result
 
 interface StaffRepository {
     suspend fun getStaff(): Result<List<Staff>>
+    suspend fun saveStaff(staff: Staff): Result<Unit>
 }

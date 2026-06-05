@@ -10,6 +10,7 @@ import com.tuberosus.ayl.feature.home.documents.DocumentsViewModel
 import com.tuberosus.ayl.feature.news.news_admin.NewsAdminViewModel
 import com.tuberosus.ayl.feature.news.news_details.NewsDetailsViewModel
 import com.tuberosus.ayl.feature.news.news_list.NewsListViewModel
+import com.tuberosus.ayl.feature.staff.staff_admin.StaffAdminViewModel
 import com.tuberosus.ayl.feature.staff.staff_list.StaffListViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -30,4 +31,5 @@ val viewModelModule = module {
 
     viewModelOf(::GalleryAdminViewModel)
     viewModelOf(::NewsAdminViewModel)
+    viewModelOf(::StaffAdminViewModel)
 }

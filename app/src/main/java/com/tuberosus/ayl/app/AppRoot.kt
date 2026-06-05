@@ -16,12 +16,12 @@ import androidx.navigation.compose.rememberNavController
 import com.tuberosus.ayl.feature.admin.AuthAction
 import com.tuberosus.ayl.feature.admin.AuthScreenRoot
 import com.tuberosus.ayl.feature.admin.AuthViewModel
-import com.tuberosus.ayl.feature.admin.StaffAdminBottomSheet
 import com.tuberosus.ayl.feature.gallery.gallery_admin.GalleryAdminRoot
 import com.tuberosus.ayl.feature.gallery.navigation.GalleryGraphRoutes
 import com.tuberosus.ayl.feature.news.navigation.NewsGraphRoutes
 import com.tuberosus.ayl.feature.news.news_admin.NewsAdminScreenRoot
 import com.tuberosus.ayl.feature.staff.navigation.StaffGraphRoutes
+import com.tuberosus.ayl.feature.staff.staff_admin.StaffAdminRoot
 import com.tuberosus.ayl.navigation.AppBottomBar
 import com.tuberosus.ayl.navigation.AppNavGraph
 import com.tuberosus.ayl.ui.components.layouts.AdminBottomSheet
@@ -88,7 +88,9 @@ fun AppRoot(
                 BottomSheetType.NEWS ->
                     NewsAdminScreenRoot(onDismiss = { showDialog = null })
 
-                BottomSheetType.STAFF -> StaffAdminBottomSheet()
+                BottomSheetType.STAFF ->
+                    StaffAdminRoot(onDismiss = { showDialog = null })
+
                 BottomSheetType.AUTH ->
                     AuthScreenRoot(
                         viewModel = authViewModel,
