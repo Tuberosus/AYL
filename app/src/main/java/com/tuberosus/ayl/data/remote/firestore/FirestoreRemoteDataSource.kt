@@ -66,7 +66,7 @@ class FirestoreRemoteDataSource(
     suspend fun <T : FirestoreDocument> saveDocument(
         collection: String,
         data: T
-    ): Result<String> {
+    ): Result<Unit> {
         return try {
             if (data.id.isBlank()) {
                 val document = firestore
@@ -74,7 +74,7 @@ class FirestoreRemoteDataSource(
                     .add(data)
                     .await()
 
-                Result.Success(document.id)
+                Result.Success(Unit)
             } else {
                 firestore
                     .collection(collection)
@@ -82,7 +82,7 @@ class FirestoreRemoteDataSource(
                     .set(data)
                     .await()
 
-                Result.Success(data.id)
+                Result.Success(Unit)
             }
         } catch (e: Exception) {
             Result.Failure(e.toAppError())

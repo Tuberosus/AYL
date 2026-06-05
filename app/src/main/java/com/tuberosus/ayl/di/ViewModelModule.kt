@@ -7,6 +7,7 @@ import com.tuberosus.ayl.feature.contacts.donation.DonationViewModel
 import com.tuberosus.ayl.feature.gallery.gallery_admin.GalleryAdminViewModel
 import com.tuberosus.ayl.feature.gallery.gallery_list.GalleryListViewModel
 import com.tuberosus.ayl.feature.home.documents.DocumentsViewModel
+import com.tuberosus.ayl.feature.news.news_admin.NewsAdminViewModel
 import com.tuberosus.ayl.feature.news.news_details.NewsDetailsViewModel
 import com.tuberosus.ayl.feature.news.news_list.NewsListViewModel
 import com.tuberosus.ayl.feature.staff.staff_list.StaffListViewModel
@@ -28,4 +29,5 @@ val viewModelModule = module {
     viewModelOf(::AuthViewModel)
 
     viewModelOf(::GalleryAdminViewModel)
+    viewModelOf(::NewsAdminViewModel)
 }

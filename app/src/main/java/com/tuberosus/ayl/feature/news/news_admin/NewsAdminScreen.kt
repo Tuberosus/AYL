@@ -1,4 +1,4 @@
-package com.tuberosus.ayl.feature.gallery.gallery_admin
+package com.tuberosus.ayl.feature.news.news_admin
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,20 +24,21 @@ import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun GalleryAdminRoot(
+fun NewsAdminScreenRoot(
     onDismiss: () -> Unit,
-    viewModel: GalleryAdminViewModel = koinViewModel(),
+    viewModel: NewsAdminViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is GalleryAdminEvent.SuccessSave -> {
+            is NewsAdminEvent.SuccessSave -> {
                 onDismiss()
             }
 
-            is GalleryAdminEvent.SaveErrorMessage -> {
+            is NewsAdminEvent.SaveErrorMessage -> {
                 Toast.makeText(
                     context,
                     event.message,
@@ -48,66 +48,51 @@ fun GalleryAdminRoot(
         }
     }
 
-    GalleryAdminScreen(
-        title = state.eventTitle,
-        onTitleChange = {
-            viewModel.onAction(GalleryAdminAction.OnTitleChange(it))
-        },
-        photoLinks = state.photoLinks.joinToString("\n"),
-        onPhotoLinksChange = {
-            viewModel.onAction(GalleryAdminAction.OnPhotoLinkChange(it))
-        },
-        canSave = state.canSave,
-        isSaving = state.isSaving,
-        onSave = {
-            viewModel.onAction(GalleryAdminAction.OnSave)
-        },
-        onDismiss = {
-            onDismiss()
-            viewModel.onAction(GalleryAdminAction.OnDismiss)
-        }
+    NewsAdminScreen(
+        state = state,
+        onAction = viewModel::onAction,
+        onDismiss = onDismiss,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun GalleryAdminScreen(
-    title: String,
-    onTitleChange: (String) -> Unit,
-    photoLinks: String,
-    onPhotoLinksChange: (String) -> Unit,
-    canSave: Boolean,
-    isSaving: Boolean,
-    onSave: () -> Unit,
+fun NewsAdminScreen(
+    state: NewsAdminState,
+    onAction: (NewsAdminAction) -> Unit,
     onDismiss: () -> Unit,
 ) {
     AdminLayout(
-        canAction = canSave,
-        isAction = isSaving,
-        onAction = onSave,
-        onDismiss = onDismiss
+        canAction = state.canSave,
+        isAction = state.isSaving,
+        onDismiss = {
+            onDismiss()
+            onAction(NewsAdminAction.OnDismiss)
+        },
+        onAction = {
+            onAction(NewsAdminAction.OnSave)
+        },
     ) {
         Text(
-            text = "Загрузка фотографий",
+            text = "Добавить новость",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Text(
-            text = "МЕРОПРИЯТИЕ",
+            text = "ОСНОВНАЯ ИНФОРМАЦИЯ",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 6.dp)
         )
 
         OutlinedTextField(
-            value = title,
-            onValueChange = onTitleChange,
+            value = state.title,
+            onValueChange = { onAction(NewsAdminAction.OnTitleChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
                 Text(
-                    text = "Название (например: Конференция 2026)",
+                    text = "Заголовок",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -115,22 +100,57 @@ private fun GalleryAdminScreen(
             singleLine = true,
             shape = RoundedCornerShape(14.dp)
         )
-
+        Spacer(Modifier.height(8.dp))
+        OutlinedTextField(
+            value = state.photoUrl,
+            onValueChange = { onAction(NewsAdminAction.OnPhotoUrlChange(it)) },
+            modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text(
+                    text = "Ссылка на изображение",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(14.dp)
+        )
+        Spacer(Modifier.height(8.dp))
+        OutlinedTextField(
+            value = state.sourceUrl,
+            onValueChange = { onAction(NewsAdminAction.OnSourceUrlChange(it)) },
+            modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text(
+                    text = "Ссылка на источник (подробнее)",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(14.dp)
+        )
         Spacer(Modifier.height(16.dp))
-
         Text(
-            text = "ССЫЛКИ НА ФОТО (каждая с новой строки)",
+            text = "ТЕКСТ НОВОСТИ",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 6.dp)
         )
 
         OutlinedTextField(
-            value = photoLinks,
-            onValueChange = onPhotoLinksChange,
+            value = state.newsText,
+            onValueChange = { onAction(NewsAdminAction.OnNewsTextChange(it)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp),
+            placeholder = {
+                Text(
+                    text = "Основное содержание",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             shape = RoundedCornerShape(14.dp),
             maxLines = 8
         )
@@ -139,16 +159,11 @@ private fun GalleryAdminScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun GalleryAdminScreenPreview() {
+private fun NewsAdminScreenPreview() {
     AYLTheme {
-        GalleryAdminScreen(
-            title = "",
-            onTitleChange = {},
-            photoLinks = "",
-            onPhotoLinksChange = {},
-            canSave = true,
-            isSaving = false,
-            onSave = {},
+        NewsAdminScreen(
+            state = NewsAdminState(),
+            onAction = {},
             onDismiss = {}
         )
     }

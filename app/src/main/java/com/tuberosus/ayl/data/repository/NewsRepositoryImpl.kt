@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.data.repository
 
 import com.tuberosus.ayl.data.mapper.toNews
+import com.tuberosus.ayl.data.mapper.toNewsDto
 import com.tuberosus.ayl.data.remote.firestore.FirestoreRemoteDataSource
 import com.tuberosus.ayl.data.remote.firestore.dto.NewsDto
 import com.tuberosus.ayl.data.remote.firestore.getCollection
@@ -45,6 +46,13 @@ class NewsRepositoryImpl(
             .map { newsDto ->
                 newsDto.toNews()
             }
+    }
+
+    override suspend fun saveNews(news: News): Result<Unit> {
+        return firestoreRemoteDataSource.saveDocument(
+            collection = NEWS_COLLECTION,
+            data = news.toNewsDto()
+        )
     }
 
     companion object {
