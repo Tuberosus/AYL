@@ -5,11 +5,46 @@ import com.tuberosus.ayl.data.mapper.toAppError
 import com.tuberosus.ayl.data.remote.firestore.dto.FirestoreDocument
 import com.tuberosus.ayl.domain.util.AppError
 import com.tuberosus.ayl.domain.util.Result
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class FirestoreRemoteDataSource(
     private val firestore: FirebaseFirestore
 ) {
+    fun <T> observeCollection(
+        collection: String,
+        clazz: Class<T>
+    ): Flow<Result<List<T>>> = callbackFlow {
+        val listener = firestore
+            .collection(collection)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    trySend(Result.Failure(error.toAppError()))
+                    return@addSnapshotListener
+                }
+
+                if (snapshot == null) {
+                    trySend(Result.Failure(AppError.Unknown("Snapshot is null")))
+                    return@addSnapshotListener
+                }
+
+                val data = snapshot.documents.mapNotNull { document ->
+                    val item = document.toObject(clazz)
+
+                    if (item is FirestoreDocument) {
+                        item.id = document.id
+                    }
+                    item
+                }
+                trySend(Result.Success(data))
+            }
+        awaitClose {
+            listener.remove()
+        }
+    }
+
     suspend fun <T> getCollection(
         collection: String,
         clazz: Class<T>
@@ -69,7 +104,7 @@ class FirestoreRemoteDataSource(
     ): Result<Unit> {
         return try {
             if (data.id.isBlank()) {
-                val document = firestore
+                firestore
                     .collection(collection)
                     .add(data)
                     .await()
@@ -131,6 +166,13 @@ class FirestoreRemoteDataSource(
         }
     }
 }
+
+inline fun <reified T> FirestoreRemoteDataSource.observeCollection(
+    collection: String,
+): Flow<Result<List<T>>> = observeCollection(
+    collection = collection,
+    clazz = T::class.java
+)
 
 suspend inline fun <reified T> FirestoreRemoteDataSource.getCollection(
     collection: String,

@@ -9,6 +9,8 @@ import com.tuberosus.ayl.domain.util.onSuccess
 import com.tuberosus.ayl.ui.util.isNonNegative
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,7 +21,7 @@ class GalleryListViewModel(
     val state = _state.asStateFlow()
 
     init {
-        getGalleryPhotos()
+        observeGalleryPhotos()
     }
 
     fun onAction(action: GalleryListAction) {
@@ -29,9 +31,6 @@ class GalleryListViewModel(
 
             is GalleryListAction.OnFullScreenGalleryCloseClick ->
                 closeOpenFullPhotoGallery()
-
-            is GalleryListAction.OnRetryClick ->
-                getGalleryPhotos()
         }
     }
 
@@ -57,6 +56,32 @@ class GalleryListViewModel(
                     }
                 }
         }
+    }
+
+    private fun observeGalleryPhotos() {
+        galleryRepository.observeGalleryPhotos()
+            .onEach { result ->
+                result
+                    .onSuccess { galleries ->
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                groupedPhotos = groupGalleriesByTitle(galleries),
+                                error = null
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                groupedPhotos = null,
+                                error = error
+                            )
+                        }
+                    }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun groupGalleriesByTitle(galleries: List<GalleryPhoto>): Map<String, List<GalleryPhoto>> {

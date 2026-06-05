@@ -6,15 +6,32 @@ import com.tuberosus.ayl.data.remote.firestore.FirestoreRemoteDataSource
 import com.tuberosus.ayl.data.remote.firestore.dto.NewsDto
 import com.tuberosus.ayl.data.remote.firestore.getCollection
 import com.tuberosus.ayl.data.remote.firestore.getDocument
+import com.tuberosus.ayl.data.remote.firestore.observeCollection
 import com.tuberosus.ayl.domain.model.news.News
 import com.tuberosus.ayl.domain.repository.NewsRepository
 import com.tuberosus.ayl.domain.util.Result
 import com.tuberosus.ayl.domain.util.map
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class NewsRepositoryImpl(
     private val firestoreRemoteDataSource: FirestoreRemoteDataSource
 ) : NewsRepository {
     private var cachedNews: List<News>? = null
+
+    override fun observeNews(): Flow<Result<List<News>>> {
+        return firestoreRemoteDataSource
+            .observeCollection<NewsDto>(NEWS_COLLECTION)
+            .map { result ->
+                result.map { newsDtos ->
+                    val news = newsDtos
+                        .map { it.toNews() }
+                        .sortedByDescending { it.date }
+                    cachedNews = news
+                    news
+                }
+            }
+    }
 
     override suspend fun getNews(): Result<List<News>> {
         cachedNews?.let {

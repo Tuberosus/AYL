@@ -7,6 +7,8 @@ import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -17,12 +19,11 @@ class NewsListViewModel(
     val state = _state.asStateFlow()
 
     init {
-        getNews()
+        observeNews()
     }
 
     fun onAction(action: NewsListAction) {
         when (action) {
-            is NewsListAction.OnRetryClick -> getNews()
             else -> Unit
         }
     }
@@ -49,5 +50,31 @@ class NewsListViewModel(
                     }
                 }
         }
+    }
+
+    private fun observeNews() {
+        newsRepository.observeNews()
+            .onEach { result ->
+                result
+                    .onSuccess { news ->
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                news = news,
+                                error = null
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                news = null,
+                                error = error
+                            )
+                        }
+                    }
+            }
+            .launchIn(viewModelScope)
     }
 }

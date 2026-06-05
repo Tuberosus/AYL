@@ -81,6 +81,8 @@ private fun GalleryListScreen(
                 end = 24.dp,
             )
     ) {
+        TitleWithUnderline("Галерея")
+        Spacer(modifier = Modifier.height(4.dp))
         when {
             state.isLoading ->
                 FullScreenProgressBar()
@@ -88,17 +90,10 @@ private fun GalleryListScreen(
             state.error != null ->
                 ErrorView(
                     error = state.error,
-                    onRetryClick = {
-                        onAction(GalleryListAction.OnRetryClick)
-                    }
                 )
 
             state.groupedPhotos != null ->
                 ImageGrid(
-                    title = {
-                        TitleWithUnderline("Галерея")
-                        Spacer(modifier = Modifier.height(4.dp))
-                    },
                     groupedPhotos = state.groupedPhotos,
                     onClick = {
                         onAction(
@@ -112,7 +107,6 @@ private fun GalleryListScreen(
 
 @Composable
 private fun ImageGrid(
-    title: @Composable () -> Unit,
     groupedPhotos: Map<String, List<GalleryPhoto>>,
     onClick: (String) -> Unit,
 ) {
@@ -123,9 +117,6 @@ private fun ImageGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        item {
-            title()
-        }
         groupedPhotos.forEach { (title, photos) ->
             item(
                 span = { GridItemSpan(maxLineSpan) }

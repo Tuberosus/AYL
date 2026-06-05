@@ -22,7 +22,7 @@ import com.tuberosus.ayl.ui.theme.White
 @Composable
 fun ErrorView(
     error: AppError,
-    onRetryClick: () -> Unit = {}
+    onRetryClick: (() -> Unit)? = null
 ) {
     val message = when (error) {
         AppError.Network -> "Ошибка загрузки данных"
@@ -48,18 +48,20 @@ fun ErrorView(
             style = MaterialTheme.typography.labelLarge,
             fontSize = 18.sp
         )
-        Spacer(modifier = Modifier.height(40.dp))
-        Button(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Green,
-                contentColor = White
-            ),
-            onClick = onRetryClick
-        ) {
-            Text(
-                text = "Повторить",
-                style = MaterialTheme.typography.titleMedium,
-            )
+        onRetryClick?.let {
+            Spacer(modifier = Modifier.height(40.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Green,
+                    contentColor = White
+                ),
+                onClick = onRetryClick
+            ) {
+                Text(
+                    text = "Повторить",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
         }
     }
 }
