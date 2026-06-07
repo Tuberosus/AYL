@@ -7,10 +7,12 @@ import com.tuberosus.ayl.domain.repository.GalleryRepository
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
 import com.tuberosus.ayl.ui.util.isNonNegative
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,6 +21,9 @@ class GalleryListViewModel(
 ) : ViewModel() {
     private var _state = MutableStateFlow(GalleryListState())
     val state = _state.asStateFlow()
+
+    private val eventChannel = Channel<GalleryListEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     init {
         observeGalleryPhotos()
@@ -30,31 +35,13 @@ class GalleryListViewModel(
                 openFullPhotoGallery(action.id)
 
             is GalleryListAction.OnFullScreenGalleryCloseClick ->
-                closeOpenFullPhotoGallery()
-        }
-    }
+                closeFullPhotoGallery()
 
-    private fun getGalleryPhotos() {
-        viewModelScope.launch {
-            galleryRepository.getGalleryPhotos()
-                .onSuccess { result ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            groupedPhotos = groupGalleriesByTitle(result),
-                            error = null,
-                        )
-                    }
-                }
-                .onFailure { error ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            groupedPhotos = null,
-                            error = error
-                        )
-                    }
-                }
+            is GalleryListAction.OnPhotoLongClick ->
+                openEditMenu(action.photo)
+
+            GalleryListAction.OnDeleteClick -> deletePhoto()
+            GalleryListAction.OnDismissClick -> closeEditMenu()
         }
     }
 
@@ -104,11 +91,54 @@ class GalleryListViewModel(
         }
     }
 
-    private fun closeOpenFullPhotoGallery() {
+    private fun deletePhoto() {
+        viewModelScope.launch {
+            _state.value.selectedPhoto?.let {
+                galleryRepository.deletePhotoFromGallery(
+                    galleryPhotoId = it.id
+                )
+                    .onSuccess {
+                        eventChannel.send(
+                            GalleryListEvent.InfoMessage(
+                                "Изображение удалено"
+                            )
+                        )
+                    }
+                    .onFailure {
+                        eventChannel.send(
+                            GalleryListEvent.InfoMessage(
+                                "Не удалось удалить изображение"
+                            )
+                        )
+                    }
+            }
+            closeEditMenu()
+        }
+    }
+
+    private fun closeFullPhotoGallery() {
         _state.update {
             it.copy(
                 isFullScreenPhotoOpen = false,
                 startIndex = -1
+            )
+        }
+    }
+
+    private fun openEditMenu(photo: GalleryPhoto) {
+        _state.update {
+            it.copy(
+                selectedPhoto = photo,
+                isEditMenuOpen = true
+            )
+        }
+    }
+
+    private fun closeEditMenu() {
+        _state.update {
+            it.copy(
+                isEditMenuOpen = false,
+                selectedPhoto = null
             )
         }
     }

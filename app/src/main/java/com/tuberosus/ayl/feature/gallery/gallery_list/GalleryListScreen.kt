@@ -1,6 +1,7 @@
 package com.tuberosus.ayl.feature.gallery.gallery_list
 
-import androidx.compose.foundation.clickable
+import android.widget.Toast
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,12 +35,14 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
+import com.tuberosus.ayl.feature.admin.AdminMenuBottomSheet
 import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.components.layouts.ErrorView
 import com.tuberosus.ayl.ui.components.layouts.FullScreenImageGallery
 import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
+import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -46,6 +50,20 @@ fun GalleryListScreenRoot(
     viewModel: GalleryListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is GalleryListEvent.InfoMessage -> {
+                Toast.makeText(
+                    context,
+                    event.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 
     GalleryListScreen(
         state = state,
@@ -64,6 +82,21 @@ fun GalleryListScreenRoot(
                 }
             )
         }
+    }
+
+    if (state.isEditMenuOpen) {
+        AdminMenuBottomSheet(
+            onDeleteClick = {
+                viewModel.onAction(
+                    GalleryListAction.OnDeleteClick
+                )
+            },
+            onDismiss = {
+                viewModel.onAction(
+                    GalleryListAction.OnDismissClick
+                )
+            }
+        )
     }
 }
 
@@ -99,6 +132,11 @@ private fun GalleryListScreen(
                         onAction(
                             GalleryListAction.OnPhotoClick(it)
                         )
+                    },
+                    onLongClick = {
+                        onAction(
+                            GalleryListAction.OnPhotoLongClick(it)
+                        )
                     }
                 )
         }
@@ -109,6 +147,7 @@ private fun GalleryListScreen(
 private fun ImageGrid(
     groupedPhotos: Map<String, List<GalleryPhoto>>,
     onClick: (String) -> Unit,
+    onLongClick: (GalleryPhoto) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -124,9 +163,11 @@ private fun ImageGrid(
                 SectionTitle(title)
             }
             items(photos) { photo ->
-                GridPhoto(photo.imageName) {
-                    onClick(photo.id)
-                }
+                GridPhoto(
+                    imageUrl = photo.imageName,
+                    onClick = { onClick(photo.id) },
+                    onLongClick = { onLongClick(photo) }
+                )
             }
         }
         item {
@@ -149,7 +190,8 @@ private fun SectionTitle(title: String) {
 @Composable
 fun GridPhoto(
     imageUrl: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
@@ -157,7 +199,10 @@ fun GridPhoto(
         modifier = Modifier
             .aspectRatio(1f)
             .clip(RoundedCornerShape(20.dp))
-            .clickable { onClick() }
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+            )
     ) {
         SubcomposeAsyncImage(
             model = imageUrl,
@@ -189,7 +234,7 @@ private fun GalleryListScreenPreview() {
             state = GalleryListState(
                 isLoading = false
             ),
-            onAction = {}
+            onAction = {},
         )
     }
 }

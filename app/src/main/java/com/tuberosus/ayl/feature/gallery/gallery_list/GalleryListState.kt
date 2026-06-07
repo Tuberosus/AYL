@@ -10,4 +10,6 @@ data class GalleryListState(
     val error: AppError? = null,
     val isFullScreenPhotoOpen: Boolean = false,
     val startIndex: Int = 0,
+    val isEditMenuOpen: Boolean = false,
+    val selectedPhoto: GalleryPhoto? = null,
 )

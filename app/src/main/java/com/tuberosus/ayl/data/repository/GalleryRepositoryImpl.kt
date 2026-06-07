@@ -52,7 +52,7 @@ class GalleryRepositoryImpl(
         )
     }
 
-    override suspend fun deletePhotoToGallery(galleryPhotoId: String): Result<Unit> {
+    override suspend fun deletePhotoFromGallery(galleryPhotoId: String): Result<Unit> {
         return firestoreRemoteDataSource.deleteDocument(
             collection = GALLERY_COLLECTION,
             documentId = galleryPhotoId

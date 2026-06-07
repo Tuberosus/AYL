@@ -10,5 +10,5 @@ interface GalleryRepository {
 
     suspend fun savePhotosToGallery(galleryPhotos: List<GalleryPhoto>): Result<Unit>
 
-    suspend fun deletePhotoToGallery(galleryPhotoId: String): Result<Unit>
+    suspend fun deletePhotoFromGallery(galleryPhotoId: String): Result<Unit>
 }
