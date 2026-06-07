@@ -37,7 +37,13 @@ fun AppNavGraph(
             },
             navController = navHostController
         )
-        staffGraph()
+        staffGraph(
+            onStaffEdit = { staff ->
+                onItemUpdate(
+                    BottomSheetType.StaffType(staff)
+                )
+            }
+        )
         contactsGraph(navHostController)
     }
 }

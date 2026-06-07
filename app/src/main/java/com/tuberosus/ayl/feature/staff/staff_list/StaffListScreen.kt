@@ -1,9 +1,12 @@
 package com.tuberosus.ayl.feature.staff.staff_list
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +38,7 @@ import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.util.AppError
+import com.tuberosus.ayl.feature.admin.AdminMenuBottomSheet
 import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.components.layouts.ErrorView
@@ -45,6 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StaffListScreenRoot(
+    onStaffEdit: (Staff?) -> Unit,
     viewModel: StaffListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -59,6 +65,14 @@ fun StaffListScreenRoot(
                 )
                 context.startActivity(intent)
             }
+
+            is StaffListEvent.InfoMessage -> {
+                Toast.makeText(
+                    context,
+                    event.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -66,6 +80,27 @@ fun StaffListScreenRoot(
         state = state,
         onAction = viewModel::onAction
     )
+
+    if (state.isEditMenuOpen) {
+        AdminMenuBottomSheet(
+            onDeleteClick = {
+                viewModel.onAction(
+                    StaffListAction.OnDeleteClick
+                )
+            },
+            onEditClick = {
+                viewModel.onAction(
+                    StaffListAction.OnDismissClick
+                )
+                onStaffEdit(state.selectedStaff)
+            },
+            onDismiss = {
+                viewModel.onAction(
+                    StaffListAction.OnDismissClick
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -96,6 +131,11 @@ private fun StaffListScreen(
                         onAction(
                             StaffListAction.OnTgClick(it)
                         )
+                    },
+                    onLongClick = {
+                        onAction(
+                            StaffListAction.OnStaffLongClick(it)
+                        )
                     }
                 )
 
@@ -109,6 +149,7 @@ private fun StaffListScreen(
 private fun StaffColumn(
     staff: List<Staff>,
     onTgClick: (String) -> Unit,
+    onLongClick: (Staff) -> Unit,
 ) {
     LazyColumn {
         items(
@@ -118,6 +159,7 @@ private fun StaffColumn(
             StaffItem(
                 staffItem = item,
                 onTgClick = { onTgClick(it) },
+                onLongClick = onLongClick
             )
             Spacer(modifier = Modifier.height(28.dp))
         }
@@ -127,11 +169,20 @@ private fun StaffColumn(
 @Composable
 private fun StaffItem(
     staffItem: Staff,
+    onLongClick: (Staff) -> Unit,
     onTgClick: (String) -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .combinedClickable(
+                onLongClick = {
+                    onLongClick(staffItem)
+                },
+                onClick = {},
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            )
     ) {
         SubcomposeAsyncImage(
             modifier = Modifier
@@ -204,7 +255,8 @@ private fun StaffItemPreview() {
                 photoName = "ivan.jpg",
                 telegramLink = "https://t.me/ivan"
             ),
-            onTgClick = {}
+            onTgClick = {},
+            onLongClick = {}
         )
     }
 }

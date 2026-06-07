@@ -37,6 +37,13 @@ class StaffRepositoryImpl(
         )
     }
 
+    override suspend fun deleteStaff(staffId: String): Result<Unit> {
+        return firestoreRemoteDataSource.deleteDocument(
+            collection = STAFF_COLLECTION,
+            documentId = staffId,
+        )
+    }
+
     companion object {
         private const val STAFF_COLLECTION = "Staff"
     }

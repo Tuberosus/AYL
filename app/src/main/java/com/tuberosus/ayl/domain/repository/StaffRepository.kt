@@ -8,4 +8,5 @@ interface StaffRepository {
     fun observeStaff(): Flow<Result<List<Staff>>>
     suspend fun getStaff(): Result<List<Staff>>
     suspend fun saveStaff(staff: Staff): Result<Unit>
+    suspend fun deleteStaff(staffId: String): Result<Unit>
 }

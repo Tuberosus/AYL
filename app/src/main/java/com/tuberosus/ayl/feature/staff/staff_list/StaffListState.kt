@@ -7,4 +7,6 @@ data class StaffListState(
     val isLoading: Boolean = true,
     val staff: List<Staff>? = null,
     val error: AppError? = null,
+    val isEditMenuOpen: Boolean = false,
+    val selectedStaff: Staff? = null,
 )

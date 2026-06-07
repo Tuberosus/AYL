@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.ui.components.layouts.AdminLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
@@ -25,12 +27,19 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StaffAdminRoot(
+    staffForUpdate: Staff?,
     onDismiss: () -> Unit,
     viewModel: StaffAdminViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
+    LaunchedEffect(staffForUpdate) {
+        viewModel.onAction(
+            StaffAdminAction.SetStaffForUpdate(staffForUpdate)
+        )
+    }
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -80,7 +89,7 @@ fun StaffAdminScreen(
         )
 
         OutlinedTextField(
-            value = state.name,
+            value = state.staffDraft.name,
             onValueChange = { onAction(StaffAdminAction.OnNameChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -95,7 +104,7 @@ fun StaffAdminScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
-            value = state.position,
+            value = state.staffDraft.position,
             onValueChange = { onAction(StaffAdminAction.OnPositionChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -110,7 +119,7 @@ fun StaffAdminScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
-            value = state.photoUrl,
+            value = state.staffDraft.photoUrl,
             onValueChange = { onAction(StaffAdminAction.OnPhotoUrlChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -125,7 +134,7 @@ fun StaffAdminScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
-            value = state.telegramLink,
+            value = state.staffDraft.telegramLink,
             onValueChange = { onAction(StaffAdminAction.OnTelegramLinkChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -140,7 +149,7 @@ fun StaffAdminScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
-            value = state.bio,
+            value = state.staffDraft.bio,
             onValueChange = { onAction(StaffAdminAction.OnBioChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {

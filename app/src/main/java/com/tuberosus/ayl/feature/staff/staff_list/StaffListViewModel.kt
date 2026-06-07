@@ -2,9 +2,12 @@ package com.tuberosus.ayl.feature.staff.staff_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.repository.StaffRepository
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
+import com.tuberosus.ayl.feature.staff.staff_list.StaffListEvent.InfoMessage
+import com.tuberosus.ayl.feature.staff.staff_list.StaffListEvent.OnTgClick
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,31 +33,11 @@ class StaffListViewModel(
     fun onAction(action: StaffListAction) {
         when (action) {
             is StaffListAction.OnTgClick ->
-                sendEvent(StaffListEvent.OnTgClick(action.telegram))
-        }
-    }
+                sendEvent(OnTgClick(action.telegram))
 
-    private fun getStaff() {
-        viewModelScope.launch {
-            staffRepository.getStaff()
-                .onSuccess { result ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            staff = result,
-                            error = null
-                        )
-                    }
-                }
-                .onFailure { error ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            staff = null,
-                            error = error
-                        )
-                    }
-                }
+            StaffListAction.OnDeleteClick -> deleteStaff()
+            StaffListAction.OnDismissClick -> closeEditMenu()
+            is StaffListAction.OnStaffLongClick -> openEditMenu(action.staff)
         }
     }
 
@@ -83,9 +66,46 @@ class StaffListViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun deleteStaff() {
+        viewModelScope.launch {
+            _state.value.selectedStaff?.let { staff ->
+                staffRepository.deleteStaff(staff.id)
+                    .onSuccess {
+                        sendEvent(
+                            InfoMessage("Контакт удален")
+                        )
+                    }
+                    .onFailure {
+                        sendEvent(
+                            InfoMessage("Не удалось удалить контакт")
+                        )
+                    }
+            }
+            closeEditMenu()
+        }
+    }
+
     private fun sendEvent(event: StaffListEvent) {
         viewModelScope.launch {
             eventChannel.send(event)
+        }
+    }
+
+    private fun openEditMenu(staff: Staff) {
+        _state.update {
+            it.copy(
+                selectedStaff = staff,
+                isEditMenuOpen = true,
+            )
+        }
+    }
+
+    private fun closeEditMenu() {
+        _state.update {
+            it.copy(
+                isEditMenuOpen = false,
+                selectedStaff = null
+            )
         }
     }
 }

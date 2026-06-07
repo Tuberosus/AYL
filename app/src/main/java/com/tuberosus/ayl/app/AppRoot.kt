@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
 import com.tuberosus.ayl.domain.model.news.News
+import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.feature.admin.AuthAction
 import com.tuberosus.ayl.feature.admin.AuthScreenRoot
 import com.tuberosus.ayl.feature.admin.AuthViewModel
@@ -41,7 +42,7 @@ fun AppRoot(
     val authState by authViewModel.state.collectAsStateWithLifecycle()
 
     val showAdminTopBar =
-//        authState.isLoggedIn &&
+        authState.isLoggedIn &&
         isRouteRequiringAdmin(currentDestination)
 
     var showDialog by rememberSaveable { mutableStateOf<BottomSheetType?>(null) }
@@ -79,14 +80,14 @@ fun AppRoot(
         )
     }
 
-    showDialog?.let {
+    showDialog?.let { type ->
         AdminBottomSheet(
             onDismiss = {
                 authViewModel.onAction(AuthAction.ClearInput)
                 showDialog = null
             }
         ) {
-            when (it) {
+            when (type) {
                 is BottomSheetType.GalleryType ->
                     GalleryAdminRoot(
                         onDismiss = { showDialog = null },
@@ -94,12 +95,15 @@ fun AppRoot(
 
                 is BottomSheetType.NewsType ->
                     NewsAdminScreenRoot(
-                        newsForUpdate = it.news,
+                        newsForUpdate = type.news,
                         onDismiss = { showDialog = null }
                     )
 
                 is BottomSheetType.StaffType ->
-                    StaffAdminRoot(onDismiss = { showDialog = null })
+                    StaffAdminRoot(
+                        staffForUpdate = type.staff,
+                        onDismiss = { showDialog = null }
+                    )
 
                 BottomSheetType.Auth ->
                     AuthScreenRoot(
@@ -109,8 +113,6 @@ fun AppRoot(
                             showDialog = null
                         }
                     )
-
-                else -> Unit
             }
         }
     }
@@ -137,7 +139,7 @@ private fun currentAdminScreen(route: String?): AdminScreen? {
 sealed interface BottomSheetType {
     data class GalleryType(val photo: GalleryPhoto? = null) : BottomSheetType
     data class NewsType(val news: News? = null) : BottomSheetType
-    data class StaffType(val id: String? = null) : BottomSheetType
+    data class StaffType(val staff: Staff? = null) : BottomSheetType
     data object Auth : BottomSheetType
 }
 

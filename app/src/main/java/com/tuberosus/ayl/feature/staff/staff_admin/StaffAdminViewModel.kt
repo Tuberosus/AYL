@@ -6,6 +6,7 @@ import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.domain.usecase.SaveStaffUseCase
 import com.tuberosus.ayl.domain.util.onFailure
 import com.tuberosus.ayl.domain.util.onSuccess
+import com.tuberosus.ayl.feature.staff.staff_admin.model.StaffDraft
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -51,14 +52,15 @@ class StaffAdminViewModel(
             is StaffAdminAction.OnBioChange -> onBioChange(action.value)
             StaffAdminAction.OnSave -> saveStaff()
             StaffAdminAction.OnDismiss -> clearState()
+            is StaffAdminAction.SetStaffForUpdate -> setStaffForUpdate(action.staff)
         }
     }
 
     private fun observeValidationStates() {
         _state
             .map {
-                it.name.isNotBlank()
-                        && it.position.isNotBlank()
+                it.staffDraft.name.isNotBlank()
+                        && it.staffDraft.position.isNotBlank()
                         && !it.isSaving
             }
             .distinctUntilChanged()
@@ -78,11 +80,12 @@ class StaffAdminViewModel(
                 it.copy(isSaving = true)
             }
             val staff = Staff(
-                name = state.name,
-                position = state.position,
-                photoName = state.photoUrl,
-                telegramLink = state.telegramLink,
-                bio = state.bio
+                id = state.staffDraft.id,
+                name = state.staffDraft.name,
+                position = state.staffDraft.position,
+                photoName = state.staffDraft.photoUrl,
+                telegramLink = state.staffDraft.telegramLink,
+                bio = state.staffDraft.bio
             )
 
             saveStaffUseCase(staff)
@@ -104,36 +107,71 @@ class StaffAdminViewModel(
     }
 
     private fun onNameChange(value: String) {
-        _state.update {
-            it.copy(name = value)
+        _state.update { currentState ->
+            currentState.copy(
+                staffDraft = currentState.staffDraft.copy(
+                    name = value
+                )
+            )
         }
     }
 
     private fun onPositionChange(value: String) {
-        _state.update {
-            it.copy(position = value)
+        _state.update { currentState ->
+            currentState.copy(
+                staffDraft = currentState.staffDraft.copy(
+                    position = value
+                )
+            )
         }
     }
 
     private fun onPhotoChange(value: String) {
-        _state.update {
-            it.copy(photoUrl = value)
+        _state.update { currentState ->
+            currentState.copy(
+                staffDraft = currentState.staffDraft.copy(
+                    photoUrl = value
+                )
+            )
         }
     }
 
     private fun onTelegramLinkChange(value: String) {
-        _state.update {
-            it.copy(telegramLink = value)
+        _state.update { currentState ->
+            currentState.copy(
+                staffDraft = currentState.staffDraft.copy(
+                    telegramLink = value
+                )
+            )
         }
     }
 
     private fun onBioChange(value: String) {
-        _state.update {
-            it.copy(bio = value)
+        _state.update { currentState ->
+            currentState.copy(
+                staffDraft = currentState.staffDraft.copy(
+                    bio = value
+                )
+            )
         }
     }
 
     private fun clearState() {
         _state.update { StaffAdminState() }
+    }
+
+    private fun setStaffForUpdate(staff: Staff?) {
+        _state.update { currentState ->
+            currentState.copy(
+                staffDraft = StaffDraft(
+                    id = staff?.id ?: "",
+                    name = staff?.name ?: "",
+                    position = staff?.position ?: "",
+                    photoUrl = staff?.photoName ?: "",
+                    telegramLink = staff?.telegramLink ?: "",
+                    bio = staff?.bio ?: "",
+                )
+            )
+        }
     }
 }
