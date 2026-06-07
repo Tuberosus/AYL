@@ -19,22 +19,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
 import com.tuberosus.ayl.ui.components.layouts.AdminLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 fun GalleryAdminRoot(
     onDismiss: () -> Unit,
-    photoForUpdate: GalleryPhoto?,
-    viewModel: GalleryAdminViewModel = koinViewModel(
-        parameters = {
-            parametersOf(photoForUpdate)
-        }
-    )
+    viewModel: GalleryAdminViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current

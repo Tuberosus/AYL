@@ -7,4 +7,6 @@ data class NewsListState(
     val isLoading: Boolean = true,
     val news: List<News>? = null,
     val error: AppError? = null,
+    val isEditMenuOpen: Boolean = false,
+    val selectedNews: News? = null,
 )

@@ -14,6 +14,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
+import com.tuberosus.ayl.domain.model.news.News
 import com.tuberosus.ayl.feature.admin.AuthAction
 import com.tuberosus.ayl.feature.admin.AuthScreenRoot
 import com.tuberosus.ayl.feature.admin.AuthViewModel
@@ -56,9 +57,9 @@ fun AppRoot(
                     onExitClick = authViewModel::signOut,
                     onAddClick = {
                         showDialog = when (currentAdminScreen(currentDestination?.route)) {
-                            AdminScreen.GALLERY -> BottomSheetType.Gallery()
-                            AdminScreen.NEWS -> BottomSheetType.News()
-                            AdminScreen.STAFF -> BottomSheetType.Staff()
+                            AdminScreen.GALLERY -> BottomSheetType.GalleryType()
+                            AdminScreen.NEWS -> BottomSheetType.NewsType()
+                            AdminScreen.STAFF -> BottomSheetType.StaffType()
                             null -> null
                         }
                     }
@@ -86,16 +87,18 @@ fun AppRoot(
             }
         ) {
             when (it) {
-                is BottomSheetType.Gallery ->
+                is BottomSheetType.GalleryType ->
                     GalleryAdminRoot(
                         onDismiss = { showDialog = null },
-                        photoForUpdate = it.photo
                     )
 
-                is BottomSheetType.News ->
-                    NewsAdminScreenRoot(onDismiss = { showDialog = null })
+                is BottomSheetType.NewsType ->
+                    NewsAdminScreenRoot(
+                        newsForUpdate = it.news,
+                        onDismiss = { showDialog = null }
+                    )
 
-                is BottomSheetType.Staff ->
+                is BottomSheetType.StaffType ->
                     StaffAdminRoot(onDismiss = { showDialog = null })
 
                 BottomSheetType.Auth ->
@@ -132,9 +135,9 @@ private fun currentAdminScreen(route: String?): AdminScreen? {
 }
 
 sealed interface BottomSheetType {
-    data class Gallery(val photo: GalleryPhoto? = null) : BottomSheetType
-    data class News(val id: String? = null) : BottomSheetType
-    data class Staff(val id: String? = null) : BottomSheetType
+    data class GalleryType(val photo: GalleryPhoto? = null) : BottomSheetType
+    data class NewsType(val news: News? = null) : BottomSheetType
+    data class StaffType(val id: String? = null) : BottomSheetType
     data object Auth : BottomSheetType
 }
 

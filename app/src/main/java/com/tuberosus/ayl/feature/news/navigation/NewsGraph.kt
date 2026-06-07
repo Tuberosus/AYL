@@ -4,10 +4,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.tuberosus.ayl.domain.model.news.News
 import com.tuberosus.ayl.feature.news.news_details.NewsDetailsScreenRoot
 import com.tuberosus.ayl.feature.news.news_list.NewsListScreenRoot
 
 fun NavGraphBuilder.newsGraph(
+    onEditNews: (News?) -> Unit,
     navController: NavController
 ) {
     navigation<NewsGraphRoutes.Graph>(
@@ -17,7 +19,8 @@ fun NavGraphBuilder.newsGraph(
             NewsListScreenRoot(
                 onNewsClick = { newsId ->
                     navController.navigate(NewsGraphRoutes.NewsDetails(newsId))
-                }
+                },
+                onNewsEdit = onEditNews
             )
         }
         composable<NewsGraphRoutes.NewsDetails> {

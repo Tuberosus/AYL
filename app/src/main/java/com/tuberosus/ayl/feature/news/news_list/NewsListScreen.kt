@@ -1,7 +1,7 @@
 package com.tuberosus.ayl.feature.news.news_list
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import android.widget.Toast
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,11 +19,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,21 +33,38 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
 import com.tuberosus.ayl.domain.model.news.News
+import com.tuberosus.ayl.feature.admin.AdminMenuBottomSheet
 import com.tuberosus.ayl.ui.components.PlaceholderImage
 import com.tuberosus.ayl.ui.components.TitleWithUnderline
 import com.tuberosus.ayl.ui.components.layouts.ErrorView
 import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Pink
+import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import com.tuberosus.ayl.ui.util.formatDate
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NewsListScreenRoot(
     onNewsClick: (String) -> Unit,
+    onNewsEdit: (News?) -> Unit,
     viewModel: NewsListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is NewsListEvent.InfoMessage -> {
+                Toast.makeText(
+                    context,
+                    event.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 
     NewsListScreen(
         state = state,
@@ -62,6 +79,27 @@ fun NewsListScreenRoot(
             viewModel.onAction(action)
         }
     )
+
+    if (state.isEditMenuOpen) {
+        AdminMenuBottomSheet(
+            onDeleteClick = {
+                viewModel.onAction(
+                    NewsListAction.OnDeleteClick
+                )
+            },
+            onEditClick = {
+                viewModel.onAction(
+                    NewsListAction.OnDismissClick
+                )
+                onNewsEdit(state.selectedNews)
+            },
+            onDismiss = {
+                viewModel.onAction(
+                    NewsListAction.OnDismissClick
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -109,6 +147,11 @@ private fun NewsColumn(
         ) { item ->
             NewsCard(
                 newsItem = item,
+                onLongNewsClick = {
+                    onAction(
+                        NewsListAction.OnNewsLongClick(it)
+                    )
+                },
                 onNewsClick = {
                     onAction(
                         NewsListAction.OnNewsClick(it)
@@ -123,14 +166,14 @@ private fun NewsColumn(
 @Composable
 private fun NewsCard(
     newsItem: News,
+    onLongNewsClick: (news: News) -> Unit,
     onNewsClick: (id: String) -> Unit
 ) {
     Surface(
         modifier = Modifier
-            .clickable(
+            .combinedClickable(
+                onLongClick = { onLongNewsClick(newsItem) },
                 onClick = { onNewsClick(newsItem.id) },
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
             ),
         shape = RoundedCornerShape(16.dp),
         shadowElevation = 2.dp,

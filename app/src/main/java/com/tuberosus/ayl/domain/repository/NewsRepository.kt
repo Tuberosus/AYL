@@ -9,4 +9,5 @@ interface NewsRepository {
     suspend fun getNews(): Result<List<News>>
     suspend fun getNewsById(newsId: String): Result<News>
     suspend fun saveNews(news: News): Result<Unit>
+    suspend fun deleteNews(newsId: String): Result<Unit>
 }

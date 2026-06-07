@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tuberosus.ayl.domain.model.news.News
 import com.tuberosus.ayl.ui.components.layouts.AdminLayout
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
@@ -26,11 +28,18 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NewsAdminScreenRoot(
     onDismiss: () -> Unit,
+    newsForUpdate: News?,
     viewModel: NewsAdminViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
+    LaunchedEffect(newsForUpdate) {
+        viewModel.onAction(
+            NewsAdminAction.SetNewsForUpdate(newsForUpdate)
+        )
+    }
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -87,7 +96,7 @@ fun NewsAdminScreen(
         )
 
         OutlinedTextField(
-            value = state.title,
+            value = state.newsDraft.title,
             onValueChange = { onAction(NewsAdminAction.OnTitleChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -102,7 +111,7 @@ fun NewsAdminScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
-            value = state.photoUrl,
+            value = state.newsDraft.photoUrl,
             onValueChange = { onAction(NewsAdminAction.OnPhotoUrlChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -117,7 +126,7 @@ fun NewsAdminScreen(
         )
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
-            value = state.sourceUrl,
+            value = state.newsDraft.sourceUrl,
             onValueChange = { onAction(NewsAdminAction.OnSourceUrlChange(it)) },
             modifier = Modifier.fillMaxWidth(),
             label = {
@@ -139,7 +148,7 @@ fun NewsAdminScreen(
         )
 
         OutlinedTextField(
-            value = state.newsText,
+            value = state.newsDraft.newsText,
             onValueChange = { onAction(NewsAdminAction.OnNewsTextChange(it)) },
             modifier = Modifier
                 .fillMaxWidth()

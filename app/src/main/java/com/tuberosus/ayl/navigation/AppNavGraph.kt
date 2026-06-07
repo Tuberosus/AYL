@@ -29,7 +29,14 @@ fun AppNavGraph(
             onLoginClick = onLoginClick,
         )
         galleryGraph()
-        newsGraph(navHostController)
+        newsGraph(
+            onEditNews = { news ->
+                onItemUpdate(
+                    BottomSheetType.NewsType(news)
+                )
+            },
+            navController = navHostController
+        )
         staffGraph()
         contactsGraph(navHostController)
     }

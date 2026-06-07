@@ -66,9 +66,18 @@ class NewsRepositoryImpl(
     }
 
     override suspend fun saveNews(news: News): Result<Unit> {
+//        cachedNews = null
         return firestoreRemoteDataSource.saveDocument(
             collection = NEWS_COLLECTION,
             data = news.toNewsDto()
+        )
+    }
+
+    override suspend fun deleteNews(newsId: String): Result<Unit> {
+//        cachedNews = null
+        return firestoreRemoteDataSource.deleteDocument(
+            collection = NEWS_COLLECTION,
+            documentId = newsId,
         )
     }
 
