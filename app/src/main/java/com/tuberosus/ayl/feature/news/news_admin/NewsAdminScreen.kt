@@ -59,6 +59,7 @@ fun NewsAdminScreenRoot(
 
     NewsAdminScreen(
         state = state,
+        isEditMode = newsForUpdate != null,
         onAction = viewModel::onAction,
         onDismiss = onDismiss,
     )
@@ -67,6 +68,7 @@ fun NewsAdminScreenRoot(
 @Composable
 fun NewsAdminScreen(
     state: NewsAdminState,
+    isEditMode: Boolean,
     onAction: (NewsAdminAction) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -82,7 +84,11 @@ fun NewsAdminScreen(
         },
     ) {
         Text(
-            text = "Добавить новость",
+            text = if (isEditMode) {
+                "Редактирование новости"
+            } else {
+                "Добавить новость"
+            },
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -172,6 +178,7 @@ private fun NewsAdminScreenPreview() {
     AYLTheme {
         NewsAdminScreen(
             state = NewsAdminState(),
+            isEditMode = true,
             onAction = {},
             onDismiss = {}
         )

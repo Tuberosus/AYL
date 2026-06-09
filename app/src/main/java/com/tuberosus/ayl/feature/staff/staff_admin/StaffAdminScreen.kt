@@ -59,6 +59,7 @@ fun StaffAdminRoot(
 
     StaffAdminScreen(
         state = state,
+        isEditMode = staffForUpdate != null,
         onAction = viewModel::onAction,
         onDismiss = onDismiss
     )
@@ -67,6 +68,7 @@ fun StaffAdminRoot(
 @Composable
 fun StaffAdminScreen(
     state: StaffAdminState,
+    isEditMode: Boolean,
     onAction: (StaffAdminAction) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -82,7 +84,11 @@ fun StaffAdminScreen(
         }
     ) {
         Text(
-            text = "Новый участник",
+            text = if (isEditMode) {
+                "Редактирование участника"
+            } else {
+                "Новый участник"
+            },
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -171,6 +177,7 @@ private fun Preview() {
     AYLTheme {
         StaffAdminScreen(
             state = StaffAdminState(),
+            isEditMode = true,
             onAction = {},
             onDismiss = {}
         )
