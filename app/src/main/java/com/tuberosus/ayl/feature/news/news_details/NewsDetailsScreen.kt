@@ -1,6 +1,5 @@
 package com.tuberosus.ayl.feature.news.news_details
 
-import android.content.Intent
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
@@ -51,6 +49,7 @@ import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Pink
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
 import com.tuberosus.ayl.ui.util.formatDate
+import com.tuberosus.ayl.ui.util.openUrl
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -64,11 +63,7 @@ fun NewsDetailsScreenRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is NewsDetailsEvent.OnEventLinkClick -> {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    event.link.toUri()
-                )
-                context.startActivity(intent)
+                context.openUrl(event.link)
             }
         }
     }

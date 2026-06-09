@@ -1,6 +1,5 @@
 package com.tuberosus.ayl.feature.staff.staff_list
 
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -30,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.tuberosus.ayl.R
@@ -44,6 +42,7 @@ import com.tuberosus.ayl.ui.components.layouts.FullScreenProgressBar
 import com.tuberosus.ayl.ui.theme.AYLTheme
 import com.tuberosus.ayl.ui.theme.Green
 import com.tuberosus.ayl.ui.util.ObserveAsEvents
+import com.tuberosus.ayl.ui.util.openUrl
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -58,11 +57,7 @@ fun StaffListScreenRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is StaffListEvent.OnTgClick -> {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    event.telegram.toUri()
-                )
-                context.startActivity(intent)
+                context.openUrl(event.telegram)
             }
 
             is StaffListEvent.InfoMessage -> {
