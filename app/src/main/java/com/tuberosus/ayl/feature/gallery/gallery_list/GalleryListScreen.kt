@@ -47,6 +47,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun GalleryListScreenRoot(
+    isLoggedIn: Boolean,
     viewModel: GalleryListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -84,7 +85,7 @@ fun GalleryListScreenRoot(
         }
     }
 
-    if (state.isEditMenuOpen) {
+    if (state.isEditMenuOpen && isLoggedIn) {
         AdminMenuBottomSheet(
             onDeleteClick = {
                 viewModel.onAction(

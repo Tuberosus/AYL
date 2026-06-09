@@ -7,6 +7,7 @@ import com.tuberosus.ayl.domain.model.staff.Staff
 import com.tuberosus.ayl.feature.staff.staff_list.StaffListScreenRoot
 
 fun NavGraphBuilder.staffGraph(
+    isLoggedIn: Boolean,
     onStaffEdit: (Staff?) -> Unit,
 ) {
     navigation<StaffGraphRoutes.Graph>(
@@ -14,6 +15,7 @@ fun NavGraphBuilder.staffGraph(
     ) {
         composable<StaffGraphRoutes.StaffList> {
             StaffListScreenRoot(
+                isLoggedIn = isLoggedIn,
                 onStaffEdit = onStaffEdit
             )
         }

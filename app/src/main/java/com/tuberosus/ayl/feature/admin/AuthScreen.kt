@@ -1,7 +1,10 @@
 package com.tuberosus.ayl.feature.admin
 
 import android.widget.Toast
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -111,20 +115,27 @@ private fun AuthScreen(
                 )
             },
             trailingIcon = {
-                Icon(
-                    modifier = Modifier
-                        .clickable(
-                            onClick = {
-                                onAction(AuthAction.OnPasswordVisibleClick)
-                            }
-                        ),
-                    painter = if (state.isPasswordVisible) {
-                        painterResource(R.drawable.ic_visibility_off)
-                    } else {
-                        painterResource(R.drawable.ic_visibility)
-                    },
-                    contentDescription = null
-                )
+                Crossfade(
+                    targetState = state.isPasswordVisible,
+                    animationSpec = tween(durationMillis = 200)
+                ) { isVisible ->
+                    Icon(
+                        modifier = Modifier
+                            .clickable(
+                                onClick = {
+                                    onAction(AuthAction.OnPasswordVisibleClick)
+                                },
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ),
+                        painter = if (isVisible) {
+                            painterResource(R.drawable.ic_visibility_off)
+                        } else {
+                            painterResource(R.drawable.ic_visibility)
+                        },
+                        contentDescription = null
+                    )
+                }
             },
             visualTransformation = if (state.isPasswordVisible) {
                 VisualTransformation.None

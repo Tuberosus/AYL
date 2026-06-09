@@ -70,6 +70,7 @@ fun AppRoot(
     ) { paddingValues ->
         AppNavGraph(
             navHostController = navController,
+            isLoggedIn = authState.isLoggedIn,
             onLoginClick = {
                 showDialog = BottomSheetType.Auth
             },

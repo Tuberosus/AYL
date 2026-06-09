@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -50,6 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StaffListScreenRoot(
+    isLoggedIn: Boolean,
     onStaffEdit: (Staff?) -> Unit,
     viewModel: StaffListViewModel = koinViewModel()
 ) {
@@ -78,10 +77,11 @@ fun StaffListScreenRoot(
 
     StaffListScreen(
         state = state,
+        isLongClickEnable = isLoggedIn,
         onAction = viewModel::onAction
     )
 
-    if (state.isEditMenuOpen) {
+    if (state.isEditMenuOpen && isLoggedIn) {
         AdminMenuBottomSheet(
             onDeleteClick = {
                 viewModel.onAction(
@@ -106,6 +106,7 @@ fun StaffListScreenRoot(
 @Composable
 private fun StaffListScreen(
     state: StaffListState,
+    isLongClickEnable: Boolean,
     onAction: (StaffListAction) -> Unit,
 ) {
     Column(
@@ -132,6 +133,7 @@ private fun StaffListScreen(
                             StaffListAction.OnTgClick(it)
                         )
                     },
+                    isLongClickEnable = isLongClickEnable,
                     onLongClick = {
                         onAction(
                             StaffListAction.OnStaffLongClick(it)
@@ -148,6 +150,7 @@ private fun StaffListScreen(
 @Composable
 private fun StaffColumn(
     staff: List<Staff>,
+    isLongClickEnable: Boolean,
     onTgClick: (String) -> Unit,
     onLongClick: (Staff) -> Unit,
 ) {
@@ -159,6 +162,7 @@ private fun StaffColumn(
             StaffItem(
                 staffItem = item,
                 onTgClick = { onTgClick(it) },
+                isLongClickEnable = isLongClickEnable,
                 onLongClick = onLongClick
             )
             Spacer(modifier = Modifier.height(28.dp))
@@ -169,6 +173,7 @@ private fun StaffColumn(
 @Composable
 private fun StaffItem(
     staffItem: Staff,
+    isLongClickEnable: Boolean,
     onLongClick: (Staff) -> Unit,
     onTgClick: (String) -> Unit,
 ) {
@@ -176,12 +181,11 @@ private fun StaffItem(
         modifier = Modifier
             .fillMaxWidth()
             .combinedClickable(
+                enabled = isLongClickEnable,
                 onLongClick = {
                     onLongClick(staffItem)
                 },
                 onClick = {},
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
             )
     ) {
         SubcomposeAsyncImage(
@@ -256,6 +260,7 @@ private fun StaffItemPreview() {
                 telegramLink = "https://t.me/ivan"
             ),
             onTgClick = {},
+            isLongClickEnable = true,
             onLongClick = {}
         )
     }
@@ -267,6 +272,7 @@ private fun StaffListScreenPreview() {
     AYLTheme {
         StaffListScreen(
             onAction = {},
+            isLongClickEnable = true,
             state = StaffListState(
                 isLoading = false,
                 staff = listOf(
@@ -296,6 +302,7 @@ private fun StaffListScreenErrorPreview() {
     AYLTheme {
         StaffListScreen(
             onAction = {},
+            isLongClickEnable = true,
             state = StaffListState(
                 isLoading = false,
                 staff = null,

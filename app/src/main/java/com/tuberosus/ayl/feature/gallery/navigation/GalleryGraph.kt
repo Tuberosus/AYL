@@ -5,12 +5,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.tuberosus.ayl.feature.gallery.gallery_list.GalleryListScreenRoot
 
-fun NavGraphBuilder.galleryGraph() {
+fun NavGraphBuilder.galleryGraph(
+    isLoggedIn: Boolean,
+) {
     navigation<GalleryGraphRoutes.Graph>(
         startDestination = GalleryGraphRoutes.GalleryList
     ) {
         composable<GalleryGraphRoutes.GalleryList> {
-            GalleryListScreenRoot()
+            GalleryListScreenRoot(isLoggedIn = isLoggedIn)
         }
     }
 }

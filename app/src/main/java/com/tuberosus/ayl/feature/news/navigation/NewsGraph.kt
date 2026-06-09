@@ -9,6 +9,7 @@ import com.tuberosus.ayl.feature.news.news_details.NewsDetailsScreenRoot
 import com.tuberosus.ayl.feature.news.news_list.NewsListScreenRoot
 
 fun NavGraphBuilder.newsGraph(
+    isLoggedIn: Boolean,
     onEditNews: (News?) -> Unit,
     navController: NavController
 ) {
@@ -17,6 +18,7 @@ fun NavGraphBuilder.newsGraph(
     ) {
         composable<NewsGraphRoutes.NewsList> {
             NewsListScreenRoot(
+                isLoggedIn = isLoggedIn,
                 onNewsClick = { newsId ->
                     navController.navigate(NewsGraphRoutes.NewsDetails(newsId))
                 },

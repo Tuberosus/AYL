@@ -15,6 +15,7 @@ import com.tuberosus.ayl.feature.staff.navigation.staffGraph
 @Composable
 fun AppNavGraph(
     navHostController: NavHostController,
+    isLoggedIn: Boolean,
     onLoginClick: () -> Unit,
     onItemUpdate: (BottomSheetType?) -> Unit,
     modifier: Modifier = Modifier
@@ -28,8 +29,9 @@ fun AppNavGraph(
             navController = navHostController,
             onLoginClick = onLoginClick,
         )
-        galleryGraph()
+        galleryGraph(isLoggedIn = isLoggedIn)
         newsGraph(
+            isLoggedIn = isLoggedIn,
             onEditNews = { news ->
                 onItemUpdate(
                     BottomSheetType.NewsType(news)
@@ -38,6 +40,7 @@ fun AppNavGraph(
             navController = navHostController
         )
         staffGraph(
+            isLoggedIn = isLoggedIn,
             onStaffEdit = { staff ->
                 onItemUpdate(
                     BottomSheetType.StaffType(staff)

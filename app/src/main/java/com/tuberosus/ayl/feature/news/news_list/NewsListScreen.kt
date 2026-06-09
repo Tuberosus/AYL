@@ -46,6 +46,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NewsListScreenRoot(
+    isLoggedIn: Boolean,
     onNewsClick: (String) -> Unit,
     onNewsEdit: (News?) -> Unit,
     viewModel: NewsListViewModel = koinViewModel()
@@ -80,7 +81,7 @@ fun NewsListScreenRoot(
         }
     )
 
-    if (state.isEditMenuOpen) {
+    if (state.isEditMenuOpen && isLoggedIn) {
         AdminMenuBottomSheet(
             onDeleteClick = {
                 viewModel.onAction(
