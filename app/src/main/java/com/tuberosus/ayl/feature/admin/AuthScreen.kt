@@ -117,7 +117,7 @@ private fun AuthScreen(
             trailingIcon = {
                 Crossfade(
                     targetState = state.isPasswordVisible,
-                    animationSpec = tween(durationMillis = 200)
+                    animationSpec = tween(durationMillis = 400)
                 ) { isVisible ->
                     Icon(
                         modifier = Modifier

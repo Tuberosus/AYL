@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.tuberosus.ayl.app.BottomSheetType
 import com.tuberosus.ayl.feature.contacts.navigation.contactsGraph
 import com.tuberosus.ayl.feature.gallery.navigation.galleryGraph
 import com.tuberosus.ayl.feature.home.navigation.HomeGraphRoutes
 import com.tuberosus.ayl.feature.home.navigation.homeGraph
 import com.tuberosus.ayl.feature.news.navigation.newsGraph
 import com.tuberosus.ayl.feature.staff.navigation.staffGraph
+import com.tuberosus.ayl.ui.components.bottomsheets.BottomSheetType
 
 @Composable
 fun AppNavGraph(

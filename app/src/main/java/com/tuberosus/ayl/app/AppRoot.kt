@@ -13,21 +13,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.tuberosus.ayl.domain.model.gallery.GalleryPhoto
-import com.tuberosus.ayl.domain.model.news.News
-import com.tuberosus.ayl.domain.model.staff.Staff
-import com.tuberosus.ayl.feature.admin.AuthAction
-import com.tuberosus.ayl.feature.admin.AuthScreenRoot
 import com.tuberosus.ayl.feature.admin.AuthViewModel
-import com.tuberosus.ayl.feature.gallery.gallery_admin.GalleryAdminRoot
 import com.tuberosus.ayl.feature.gallery.navigation.GalleryGraphRoutes
 import com.tuberosus.ayl.feature.news.navigation.NewsGraphRoutes
-import com.tuberosus.ayl.feature.news.news_admin.NewsAdminScreenRoot
 import com.tuberosus.ayl.feature.staff.navigation.StaffGraphRoutes
-import com.tuberosus.ayl.feature.staff.staff_admin.StaffAdminRoot
 import com.tuberosus.ayl.navigation.AppBottomBar
 import com.tuberosus.ayl.navigation.AppNavGraph
-import com.tuberosus.ayl.ui.components.layouts.AdminBottomSheet
+import com.tuberosus.ayl.ui.components.bottomsheets.AppRootBottomSheet
+import com.tuberosus.ayl.ui.components.bottomsheets.BottomSheetType
 import com.tuberosus.ayl.ui.components.topbars.AdminTopBar
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -45,7 +38,7 @@ fun AppRoot(
         authState.isLoggedIn &&
         isRouteRequiringAdmin(currentDestination)
 
-    var showDialog by rememberSaveable { mutableStateOf<BottomSheetType?>(null) }
+    var showDialogType by rememberSaveable { mutableStateOf<BottomSheetType?>(null) }
 
 
     Scaffold(
@@ -57,7 +50,7 @@ fun AppRoot(
                 AdminTopBar(
                     onExitClick = authViewModel::signOut,
                     onAddClick = {
-                        showDialog = when (currentAdminScreen(currentDestination?.route)) {
+                        showDialogType = when (currentAdminScreen(currentDestination?.route)) {
                             AdminScreen.GALLERY -> BottomSheetType.GalleryType()
                             AdminScreen.NEWS -> BottomSheetType.NewsType()
                             AdminScreen.STAFF -> BottomSheetType.StaffType()
@@ -72,51 +65,22 @@ fun AppRoot(
             navHostController = navController,
             isLoggedIn = authState.isLoggedIn,
             onLoginClick = {
-                showDialog = BottomSheetType.Auth
+                showDialogType = BottomSheetType.Auth
             },
             onItemUpdate = { bottomSheetType ->
-                showDialog = bottomSheetType
+                showDialogType = bottomSheetType
             },
             modifier = Modifier.padding(paddingValues)
         )
     }
 
-    showDialog?.let { type ->
-        AdminBottomSheet(
-            onDismiss = {
-                authViewModel.onAction(AuthAction.ClearInput)
-                showDialog = null
-            }
-        ) {
-            when (type) {
-                is BottomSheetType.GalleryType ->
-                    GalleryAdminRoot(
-                        onDismiss = { showDialog = null },
-                    )
-
-                is BottomSheetType.NewsType ->
-                    NewsAdminScreenRoot(
-                        newsForUpdate = type.news,
-                        onDismiss = { showDialog = null }
-                    )
-
-                is BottomSheetType.StaffType ->
-                    StaffAdminRoot(
-                        staffForUpdate = type.staff,
-                        onDismiss = { showDialog = null }
-                    )
-
-                BottomSheetType.Auth ->
-                    AuthScreenRoot(
-                        viewModel = authViewModel,
-                        onDismiss = {
-                            authViewModel.onAction(AuthAction.ClearInput)
-                            showDialog = null
-                        }
-                    )
-            }
-        }
-    }
+    AppRootBottomSheet(
+        authViewModel = authViewModel,
+        onTypeChange = { type ->
+            showDialogType = type
+        },
+        showDialogType = showDialogType
+    )
 }
 
 private fun isRouteRequiringAdmin(currentDestination: NavDestination?): Boolean {
@@ -135,13 +99,6 @@ private fun currentAdminScreen(route: String?): AdminScreen? {
         StaffGraphRoutes.StaffList::class.qualifiedName -> AdminScreen.STAFF
         else -> null
     }
-}
-
-sealed interface BottomSheetType {
-    data class GalleryType(val photo: GalleryPhoto? = null) : BottomSheetType
-    data class NewsType(val news: News? = null) : BottomSheetType
-    data class StaffType(val staff: Staff? = null) : BottomSheetType
-    data object Auth : BottomSheetType
 }
 
 enum class AdminScreen {
